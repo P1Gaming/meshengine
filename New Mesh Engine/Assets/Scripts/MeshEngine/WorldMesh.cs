@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
 
-public class WorldMesh : MonoBehaviour, IMeshEngine
+public class WorldMesh : MonoBehaviour, IMeshEngineTwo
 {
     [SerializeField] int worldChunksPerSide = 100;
     [SerializeField] Transform chunkContainer;
