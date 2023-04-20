@@ -3,6 +3,6 @@ using UnityEngine;
 public class ChunkData
 {
     bool isEmpty;
-    BlockType[][][] Data;
+    BlockType[,,] Data;
     Vector3Int position;
 }
