@@ -1,4 +1,4 @@
-public interface ISaveDate
+public interface ISaveData
 {
     public void SaveChunkData (ChunkData chunkData);
 }
