@@ -1,4 +1,7 @@
+using System;
 using UnityEngine;
+
+[Serializable]
 public class ChunkData
 {
     public bool isEmpty { get; private set; }
@@ -18,11 +21,11 @@ public class ChunkData
     public void AddBlockAtIndex(Vector3Int index, BlockType blockType)
     {
         // if index is within Chunk size
-        if(
+        if(!(
             index.x < 0 || index.x > size.x-1 ||
             index.y < 0 || index.y > size.y-1 ||
             index.z < 0 || index.z > size.z-1
-            )
+            ))
         {
             if(isEmpty)
             {
