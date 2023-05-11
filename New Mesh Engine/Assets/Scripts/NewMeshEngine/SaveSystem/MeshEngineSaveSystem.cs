@@ -10,18 +10,22 @@ namespace MeshEngine.SaveSystem
 {
 
 
-    public class MeshEngineSaveSystem : ISaveData
+    public class MeshEngineSaveSystem : ISaveData, IReadData
     {
-        static int xMultiplier = 3;
+        static int xMultiplier = 27;
         static int yMultiplier = 9;
-        static int zMultiplier = 27;
+        static int zMultiplier = 3;
 
         string fullPath;
 
+        private readonly Vector3Int chunkSize = new Vector3Int(16, 128, 16);
+        private readonly int chunkSizeInBytes;
         BinaryFormatter binaryFormatter = new BinaryFormatter();
 
         public MeshEngineSaveSystem(string savePath, string filename, int worldSize)
         {
+            chunkSizeInBytes = chunkSize.x * chunkSize.y * chunkSize.z + 1;
+
             fullPath = $"{savePath}/{filename}.meshchunks";
 
             Directory.CreateDirectory(savePath);
@@ -34,114 +38,110 @@ namespace MeshEngine.SaveSystem
 
             if (createNewFile)
             {
-                using (Stream stream = new FileStream(fullPath, FileMode.Create))
+                using (Stream stream = new FileStream(fullPath, FileMode.Create,FileAccess.ReadWrite))
                 {
                     ChunkSaveData[] saveData = new ChunkSaveData[worldSize];
                     for (int i = 0; i < worldSize; i++)
                     {
                         saveData[i] = new ChunkSaveData()
                         {
-                            isEmpty = true
+                            isEmpty = true,
+                            blockType = new byte[chunkSizeInBytes]
                         };
                     }
                     binaryFormatter.Serialize(stream, saveData);
                     stream.Close();
-                    //byte[] datas = new byte[worldSize * 2];
-
-                    //for (int i = 0; i < datas.Length; i++)
-                    //{
-                    //    datas[i] = i % 2 == 0 ? (byte)0 : (byte)255;
-                    //    stream.WriteByte(datas[i]);
-                    //}
                 }
-
             }
-
-
         }
+
         public void SaveChunkData(ChunkData chunkData)
         {
-            string[] lines = File.ReadAllLines(fullPath);
-            Vector3Int pos = chunkData.position;
-            int lineIndex = pos.x * xMultiplier + pos.y * yMultiplier + pos.z * zMultiplier;
+            long binOffset = GetChunkFileIndex(chunkData.position)*chunkSizeInBytes;
+            ChunkSaveData saveData = chunkData.GetSaveData();
 
-            byte[] binDatas = new byte[chunkData.Data.Length + 1];
-
-            using (Stream stream = new FileStream(fullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite))
+            using (FileStream stream = File.Open(fullPath, FileMode.Open))
             {
-                BinaryWriter writer = new BinaryWriter(stream);
+                stream.Seek(binOffset, SeekOrigin.Begin);
 
-                string line = lines[lineIndex];
-                StringBuilder newLine = new StringBuilder();
-
-                if (chunkData.isEmpty)
+                using (BinaryWriter writer = new BinaryWriter(stream))
                 {
-                    // empty line
-                    writer.Write(0);
-                }
-                else
-                {
-                    writer.Write(1);
-                    for (int z = 0; z < chunkData.Data.GetLength(2); z++)
-                    {
-                        for (int y = 0; y < chunkData.Data.GetLength(1); y++)
-                        {
-                            for (int x = 0; x >= chunkData.Data.GetLength(0); x++)
-                            {
-                                writer.Write((byte)chunkData.Data[x, y, z]);
-                            }
-                        }
-                    }
+                    binaryFormatter.Serialize(stream, saveData);
                 }
             }
 
         }
-        void readSingelChunkFromFile()
+
+        
+        int GetChunkFileIndex(Vector3Int pos)
         {
+            return pos.x * xMultiplier + pos.y * yMultiplier + pos.z * zMultiplier;
+        }
+
+        ChunkSaveData ReadSingelChunkFromFile(int chunkFileIndex)
+        {
+            ChunkSaveData results;
             // The path to the binary file.
-            string filePath = "example.bin";
+            string filePath = fullPath;
 
             // The index of the struct to retrieve.
-            int index = 3;
-            var tempChunk = new ChunkSaveData();
+            int index = chunkFileIndex;
+
             // The size of each struct in bytes.
-            int structSize = 32769;
+            int structSize = chunkSizeInBytes;
+            long byteOffest = structSize * index;
 
             // Open the binary file using a FileStream.
             using (FileStream stream = File.Open(filePath, FileMode.Open))
             {
 
                 // Position the stream at the appropriate location for the desired struct.
-                stream.Seek(index * structSize, SeekOrigin.Begin);
+                stream.Seek(byteOffest, SeekOrigin.Begin);
+
 
                 // Read the bytes representing the struct using a BinaryReader.
                 using (BinaryReader reader = new BinaryReader(stream))
                 {
                     byte[] bytes = reader.ReadBytes(structSize);
 
+                    binaryFormatter = new BinaryFormatter();
+
                     // Create a new MemoryStream from the bytes and deserialize the struct.
                     MemoryStream memoryStream = new MemoryStream(bytes);
-                    BinaryFormatter formatter = new BinaryFormatter();
-                    ChunkSaveData myStruct = (ChunkSaveData)formatter.Deserialize(memoryStream);
-
-                    // Use the struct as needed.
-                    Console.WriteLine("The value of MyProperty in the retrieved struct is: " + myStruct.blockType);
+                    results = (ChunkSaveData)binaryFormatter.Deserialize(memoryStream);
                 }
-            }
 
-            Console.WriteLine("Done!");
+            }
+            return results;
         }
 
+        public ChunkData[,,] GetChunkData(Bounds bounds)
+        {
+            ChunkData[,,] results = new ChunkData[(int)bounds.size.x,(int)bounds.size.y,(int)bounds.size.z];
+
+            for(int x = (int)bounds.min.x; x < (int)bounds.max.y; x++)
+            {
+                for(int y = (int)bounds.min.y; y < (int)bounds.max.y; y++)
+                {
+                    for(int z = (int)bounds.min.z; z < (int)bounds.max.z; y++)
+                    {
+                        Vector3Int pos = new Vector3Int(x, y, z);
+                        int ChunkFileIndex = GetChunkFileIndex(pos);
+                        ChunkSaveData savedData = ReadSingelChunkFromFile(ChunkFileIndex);
+                        ChunkData data = new ChunkData(pos, chunkSize, savedData);
+                        results[x, y, z] = data;
+                    }
+                }
+            }
+            return results;
+        }
     }
 
-
-    //[StructLayout(LayoutKind.Sequential,Pack =1)]
-    internal struct ChunkSaveData
+    [Serializable]
+    public struct ChunkSaveData
     {
-        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 1)]
         public bool isEmpty;
 
-        //[MarshalAs(UnmanagedType.ByValArray, SizeConst = 32768)]
-        public Byte[,,] blockType; // Blocktype as byte
+        public byte[] blockType; // Blocktype as byte
     }
 }
