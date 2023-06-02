@@ -1,3 +1,4 @@
+using Codice.CM.SEIDInfo;
 using System;
 using System.IO;
 using System.Runtime.InteropServices;
@@ -12,23 +13,25 @@ namespace MeshEngine.SaveSystem
 
     public class MeshEngineSaveSystem : ISaveData, IReadData
     {
-        static int xMultiplier = 27;
-        static int yMultiplier = 9;
-        static int zMultiplier = 3;
+        readonly int xMultiplier;
+        readonly int yMultiplier;
+        readonly int zMultiplier;
 
         string fullPath;
 
-        private readonly Vector3Int chunkSize = new Vector3Int(16, 128, 16);
+        private readonly Vector3Int chunkSize = new Vector3Int(2, 2, 2);
         private readonly int chunkSizeInBytes;
-        BinaryFormatter binaryFormatter = new BinaryFormatter();
 
         public MeshEngineSaveSystem(string savePath, string filename, int worldSize)
         {
-            chunkSizeInBytes = chunkSize.x * chunkSize.y * chunkSize.z + 1;
+            zMultiplier = chunkSize.z > 0 ? 1 : 0;
+            yMultiplier = chunkSize.x;
+            xMultiplier = chunkSize.y * chunkSize.z;
+
+            chunkSizeInBytes = (chunkSize.x * chunkSize.y * chunkSize.z + 1)*2;
 
             fullPath = $"{savePath}/{filename}.meshchunks";
 
-            Directory.CreateDirectory(savePath);
             if (!Directory.Exists(savePath))
             {
                 Directory.CreateDirectory(savePath);
@@ -38,18 +41,20 @@ namespace MeshEngine.SaveSystem
 
             if (createNewFile)
             {
-                using (Stream stream = new FileStream(fullPath, FileMode.Create,FileAccess.ReadWrite))
+                using (Stream stream = new FileStream(fullPath, FileMode.Create, FileAccess.Write))
                 {
-                    ChunkSaveData[] saveData = new ChunkSaveData[worldSize];
-                    for (int i = 0; i < worldSize; i++)
+                    using (BinaryWriter writer = new BinaryWriter(stream))
                     {
-                        saveData[i] = new ChunkSaveData()
+                        
+                        for (int i = 0; i < worldSize; i++)
                         {
-                            isEmpty = true,
-                            blockType = new byte[chunkSizeInBytes]
-                        };
+                            byte[] saveData = new byte[chunkSizeInBytes];
+
+                            saveData[0] = 1;
+
+                            writer.Write(saveData);
+                        }
                     }
-                    binaryFormatter.Serialize(stream, saveData);
                     stream.Close();
                 }
             }
@@ -57,8 +62,8 @@ namespace MeshEngine.SaveSystem
 
         public void SaveChunkData(ChunkData chunkData)
         {
-            long binOffset = GetChunkFileIndex(chunkData.position)*chunkSizeInBytes;
-            ChunkSaveData saveData = chunkData.GetSaveData();
+            long binOffset = GetChunkByteIndex(chunkData.position) * chunkSizeInBytes;
+            byte[] saveData = chunkData.GetSaveData();
 
             using (FileStream stream = File.Open(fullPath, FileMode.Open))
             {
@@ -66,21 +71,20 @@ namespace MeshEngine.SaveSystem
 
                 using (BinaryWriter writer = new BinaryWriter(stream))
                 {
-                    binaryFormatter.Serialize(stream, saveData);
+                    writer.Write(saveData);
                 }
             }
 
         }
 
-        
-        int GetChunkFileIndex(Vector3Int pos)
+
+        int GetChunkByteIndex(Vector3Int pos)
         {
             return pos.x * xMultiplier + pos.y * yMultiplier + pos.z * zMultiplier;
         }
 
-        ChunkSaveData ReadSingelChunkFromFile(int chunkFileIndex)
+        bool ReadSingelChunkFromFile(int chunkFileIndex, out byte[] data)
         {
-            ChunkSaveData results;
             // The path to the binary file.
             string filePath = fullPath;
 
@@ -97,38 +101,43 @@ namespace MeshEngine.SaveSystem
 
                 // Position the stream at the appropriate location for the desired struct.
                 stream.Seek(byteOffest, SeekOrigin.Begin);
-
+                
 
                 // Read the bytes representing the struct using a BinaryReader.
                 using (BinaryReader reader = new BinaryReader(stream))
                 {
-                    byte[] bytes = reader.ReadBytes(structSize);
-
-                    binaryFormatter = new BinaryFormatter();
-
-                    // Create a new MemoryStream from the bytes and deserialize the struct.
-                    MemoryStream memoryStream = new MemoryStream(bytes);
-                    results = (ChunkSaveData)binaryFormatter.Deserialize(memoryStream);
+                    if(reader.ReadBoolean()) 
+                    {
+                        data = null;
+                        return false;
+                    }
+                    data = reader.ReadBytes(structSize-1);
                 }
 
             }
-            return results;
+            
+            return true;
         }
 
         public ChunkData[,,] GetChunkData(Bounds bounds)
         {
-            ChunkData[,,] results = new ChunkData[(int)bounds.size.x,(int)bounds.size.y,(int)bounds.size.z];
+            ChunkData[,,] results = new ChunkData[(int)bounds.size.x+1, (int)bounds.size.y+1, (int)bounds.size.z+1];
 
-            for(int x = (int)bounds.min.x; x < (int)bounds.max.y; x++)
+            for (int x = (int)bounds.min.x; x < (int)bounds.max.x+1; x++)
             {
-                for(int y = (int)bounds.min.y; y < (int)bounds.max.y; y++)
+                for (int y = (int)bounds.min.y; y < (int)bounds.max.y+1; y++)
                 {
-                    for(int z = (int)bounds.min.z; z < (int)bounds.max.z; y++)
+                    for (int z = (int)bounds.min.z; z < (int)bounds.max.z+1; z++)
                     {
                         Vector3Int pos = new Vector3Int(x, y, z);
-                        int ChunkFileIndex = GetChunkFileIndex(pos);
-                        ChunkSaveData savedData = ReadSingelChunkFromFile(ChunkFileIndex);
-                        ChunkData data = new ChunkData(pos, chunkSize, savedData);
+                        int ChunkFileIndex = GetChunkByteIndex(pos);
+                        ChunkData data = null;
+                        if (ReadSingelChunkFromFile(ChunkFileIndex, out byte[] savedData)) 
+                        {
+                            data = new ChunkData(pos, chunkSize, savedData);
+                        }
+
+                        //ChunkData chunkData = new ChunkData(pos,chunkSize);
                         results[x, y, z] = data;
                     }
                 }

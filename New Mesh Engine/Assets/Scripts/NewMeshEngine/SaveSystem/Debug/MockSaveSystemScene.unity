@@ -486,7 +486,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1378629602}
+      - m_Target: {fileID: 1378629604}
         m_TargetAssemblyTypeName: MeshEngine.SaveSystem.MockSaver, MeshEngine
         m_MethodName: LoadIndex
         m_Mode: 3
@@ -545,7 +545,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1378629603}
-  - component: {fileID: 1378629602}
+  - component: {fileID: 1378629604}
   m_Layer: 0
   m_Name: TestSaver
   m_TagString: Untagged
@@ -553,20 +553,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &1378629602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1378629601}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 858e43739c7f50442b43ab7f956cadf5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  chunkData: []
-  saveIndex: 2
 --- !u!4 &1378629603
 Transform:
   m_ObjectHideFlags: 0
@@ -582,6 +568,20 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1378629604
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1378629601}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 858e43739c7f50442b43ab7f956cadf5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  chunkData: []
+  saveIndex: 1
 --- !u!1 &1717326560
 GameObject:
   m_ObjectHideFlags: 0
