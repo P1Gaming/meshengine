@@ -1,17 +1,12 @@
-using Codice.CM.SEIDInfo;
 using System;
 using System.IO;
-using System.Runtime.InteropServices;
-using System.Runtime.Serialization.Formatters.Binary;
-using System.Text;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 namespace MeshEngine.SaveSystem
 {
 
 
-    public class MeshEngineSaveSystem : ISaveData, IReadData
+    internal class MeshEngineSaveSystem : ISaveData, IReadData
     {
         readonly int xMultiplier;
         readonly int yMultiplier;
@@ -19,16 +14,19 @@ namespace MeshEngine.SaveSystem
 
         string fullPath;
 
-        private readonly Vector3Int chunkSize = new Vector3Int(2, 2, 2);
+        private readonly Vector3Int chunkSize = new Vector3Int(16, 128, 16);
         private readonly int chunkSizeInBytes;
+        private readonly Vector3Int worldSize;
 
-        public MeshEngineSaveSystem(string savePath, string filename, int worldSize)
+        public MeshEngineSaveSystem(string savePath, string filename, Vector3Int worldSize)
         {
-            zMultiplier = chunkSize.z > 0 ? 1 : 0;
-            yMultiplier = chunkSize.x;
-            xMultiplier = chunkSize.y * chunkSize.z;
+            this.worldSize = worldSize;
+            int chunks = worldSize.x*worldSize.y*worldSize.z;
+            zMultiplier = worldSize.z > 0 ? 1 : 0;
+            yMultiplier = worldSize.x;
+            xMultiplier = worldSize.y * worldSize.z;
 
-            chunkSizeInBytes = (chunkSize.x * chunkSize.y * chunkSize.z + 1)*2;
+            chunkSizeInBytes = (chunkSize.x * chunkSize.y * chunkSize.z)*2+1;
 
             fullPath = $"{savePath}/{filename}.meshchunks";
 
@@ -46,7 +44,7 @@ namespace MeshEngine.SaveSystem
                     using (BinaryWriter writer = new BinaryWriter(stream))
                     {
                         
-                        for (int i = 0; i < worldSize; i++)
+                        for (int i = 0; i < chunks; i++)
                         {
                             byte[] saveData = new byte[chunkSizeInBytes];
 
@@ -63,7 +61,7 @@ namespace MeshEngine.SaveSystem
         public void SaveChunkData(ChunkData chunkData)
         {
             long binOffset = GetChunkByteIndex(chunkData.position) * chunkSizeInBytes;
-            byte[] saveData = chunkData.GetSaveData();
+            byte[] saveData = ChunkDataByteConverter.GetSaveData(chunkData);
 
             using (FileStream stream = File.Open(fullPath, FileMode.Open))
             {
@@ -111,7 +109,8 @@ namespace MeshEngine.SaveSystem
                         data = null;
                         return false;
                     }
-                    data = reader.ReadBytes(structSize-1);
+                    stream.Seek(-1, SeekOrigin.Current);
+                    data = reader.ReadBytes(structSize);
                 }
 
             }
@@ -134,7 +133,8 @@ namespace MeshEngine.SaveSystem
                         ChunkData data = null;
                         if (ReadSingelChunkFromFile(ChunkFileIndex, out byte[] savedData)) 
                         {
-                            data = new ChunkData(pos, chunkSize, savedData);
+                            data = new ChunkData(pos, chunkSize);
+                            data.OverwriteBlockTypeData(ChunkDataByteConverter.ConvertByteToChunkBlockTypeData(pos,chunkSize,savedData),false);
                         }
 
                         //ChunkData chunkData = new ChunkData(pos,chunkSize);

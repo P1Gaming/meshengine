@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public interface IReadData
+internal interface IReadData
 {
     public ChunkData[,,] GetChunkData(Bounds bounds);
 }
