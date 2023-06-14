@@ -1,5 +1,9 @@
-internal interface ISaveData
+namespace MeshEngine.SaveSystem
 {
-    public void SaveChunkData (ChunkData chunkData);
-   
+
+    internal interface ISaveData
+    {
+        public void SaveChunkData(ChunkData chunkData);
+
+    }
 }

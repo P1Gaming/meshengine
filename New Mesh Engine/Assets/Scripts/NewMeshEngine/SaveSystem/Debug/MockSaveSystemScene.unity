@@ -487,9 +487,9 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1378629604}
-        m_TargetAssemblyTypeName: MeshEngine.SaveSystem.MockSaver, MeshEngine
-        m_MethodName: loadtwodimension
-        m_Mode: 3
+        m_TargetAssemblyTypeName: MeshEngine.SaveSystem.Testing.MockSaver, MeshEngine
+        m_MethodName: loadData
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -584,6 +584,8 @@ MonoBehaviour:
     m_Center: {x: 10, y: 10, z: 10}
     m_Extent: {x: 10, y: 10, z: 10}
   chunkData: []
+  path: C:/temp/meshengine
+  testThreeDimensions: 1
 --- !u!1 &1717326560
 GameObject:
   m_ObjectHideFlags: 0

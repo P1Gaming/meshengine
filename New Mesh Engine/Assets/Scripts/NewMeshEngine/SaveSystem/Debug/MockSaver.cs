@@ -1,35 +1,67 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 
-namespace MeshEngine.SaveSystem
+namespace MeshEngine.SaveSystem.Testing
 {
     public class MockSaver : MonoBehaviour
     {
         [SerializeField] Bounds bounds;
         [SerializeField] List<ChunkData> chunkData = new List<ChunkData>();
+
+        [SerializeField] string path = "C:/temp/meshengine";
+
+        [SerializeField] bool testThreeDimensions;
+
         MeshEngineSaveSystem meshEngineSaveSystemTwoDimensions;
+
+        string twoDFileName = "test2D";
+        string threeDFileName = "test3D";
+
 
         private void Awake()
         {
-            chunkData.Add(new ChunkData(new Vector3Int(0, 0, 0), new Vector3Int(16, 128, 16)));
-            chunkData.Add(new ChunkData(new Vector3Int(0, 0, 1), new Vector3Int(16, 128, 16)));
-            chunkData.Add(new ChunkData(new Vector3Int(2, 0, 0), new Vector3Int(16, 128, 16)));
-            chunkData.Add(new ChunkData(new Vector3Int(10, 0, 10), new Vector3Int(16, 128, 16)));
 
-            meshEngineSaveSystemTwoDimensions = new MeshEngineSaveSystem("C:/temp/k", "testSave", new Vector2Int(20, 20));
+            if (testThreeDimensions)
+            {
+                chunkData.Add(new ChunkData(new Vector3Int(0, 0, 0), new Vector3Int(16, 256, 16)));
+                chunkData.Add(new ChunkData(new Vector3Int(0, 0, 1), new Vector3Int(16, 256, 16)));
+                chunkData.Add(new ChunkData(new Vector3Int(2, 0, 0), new Vector3Int(16, 256, 16)));
+                chunkData.Add(new ChunkData(new Vector3Int(9, 0, 9), new Vector3Int(16, 256, 16)));
+                meshEngineSaveSystemTwoDimensions = new MeshEngineSaveSystem(path, threeDFileName, new Vector3Int(20, 20, 20));
+            }
+            else
+            {
+                chunkData.Add(new ChunkData(new Vector2Int(0, 0), new Vector3Int(16, 256, 16)));
+                chunkData.Add(new ChunkData(new Vector2Int(0, 1), new Vector3Int(16, 256, 16)));
+                chunkData.Add(new ChunkData(new Vector2Int(2, 0), new Vector3Int(16, 256, 16)));
+                chunkData.Add(new ChunkData(new Vector2Int(9, 9), new Vector3Int(16, 256, 16)));
+                meshEngineSaveSystemTwoDimensions = new MeshEngineSaveSystem(path, twoDFileName, new Vector2Int(20, 20));
+            }
 
             SetupChunk(0);
 
             Save();
         }
 
-        public void loadtwodimension(int index)
+        public void loadData()
+        {
+            if (testThreeDimensions)
+            {
+                LoadThreeDimensions();
+            }
+            else
+            {
+                Loadtwodimension();
+            }
+        }
+        private void Loadtwodimension()
         {
             SquareBoundXZ bounds = new SquareBoundXZ();
             bounds.Center = new Vector2(0.5f, 0.5f);
-            bounds.Size = 1;
+            bounds.Size = 3;
             ChunkData[,] data = meshEngineSaveSystemTwoDimensions.GetChunkData(bounds);
             foreach (var item in data)
             {
@@ -39,8 +71,7 @@ namespace MeshEngine.SaveSystem
                     {
                         if (block != BlockType.Air)
                         {
-                            Debug.Log(block);
-
+                            Debug.Log(block + " in " + item.position);
                         }
                     }
                     Debug.Log(item.position);
@@ -48,7 +79,7 @@ namespace MeshEngine.SaveSystem
                 }
             }
         }
-        public void LoadIndex(int index)
+        private void LoadThreeDimensions()
         {
             Bounds bounds = new Bounds();
             bounds.min = new Vector3(0, 0, 0);

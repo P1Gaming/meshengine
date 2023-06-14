@@ -1,8 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class SquareBoundXZ : MonoBehaviour
+internal class SquareBoundXZ
 {
     public Vector2 Center;
     public float Size;

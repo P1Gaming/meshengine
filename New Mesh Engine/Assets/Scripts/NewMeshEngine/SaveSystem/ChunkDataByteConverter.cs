@@ -1,38 +1,42 @@
 ﻿using System;
 using UnityEngine;
 
-internal class ChunkDataByteConverter
+namespace MeshEngine.SaveSystem
 {
-    public static byte[] GetSaveData(ChunkData chunkData)
+
+
+    internal class ChunkDataByteConverter
     {
-        byte[] saveData = new byte[(chunkData.size.x * chunkData.size.y * chunkData.size.z ) * 2 +  1];
-        saveData[0] = chunkData.isEmpty ? (byte)1 : (byte)0;
-
-        int i =1;
-
-        for (int x = 0; x < chunkData.size.x; x++)
+        public static byte[] GetSaveData(ChunkData chunkData)
         {
-            for (int y = 0; y < chunkData.size.y; y++)
+            byte[] saveData = new byte[(chunkData.size.x * chunkData.size.y * chunkData.size.z) * 2 + 1];
+            saveData[0] = chunkData.isEmpty ? (byte)1 : (byte)0;
+
+            int i = 1;
+
+            for (int x = 0; x < chunkData.size.x; x++)
             {
-                for (int z = 0; z < chunkData.size.z; z++)
+                for (int y = 0; y < chunkData.size.y; y++)
                 {
-                    byte[] bytes = BitConverter.GetBytes((ushort)chunkData.Data[x, y, z]);
-                    Array.Copy(bytes, 0, saveData, i, sizeof(ushort));
-                    i += 2;
+                    for (int z = 0; z < chunkData.size.z; z++)
+                    {
+                        byte[] bytes = BitConverter.GetBytes((ushort)chunkData.Data[x, y, z]);
+                        Array.Copy(bytes, 0, saveData, i, sizeof(ushort));
+                        i += 2;
+                    }
                 }
             }
+            return saveData;
         }
-        return saveData;
-    }
 
-    public static BlockType[,,] ConvertByteToChunkBlockTypeData(Vector3Int position, Vector3Int size, byte[] saveData)
-    {
-        ushort[] uShortSaveData = new ushort[(saveData.Length - 1) / 2];
-        Buffer.BlockCopy(saveData, 1, uShortSaveData, 0, saveData.Length-1);
+        public static BlockType[,,] ConvertByteToChunkBlockTypeData(Vector3Int position, Vector3Int size, byte[] saveData)
+        {
+            ushort[] uShortSaveData = new ushort[(saveData.Length - 1) / 2];
+            Buffer.BlockCopy(saveData, 1, uShortSaveData, 0, saveData.Length - 1);
 
-        BlockType[,,] results = new BlockType[size.x, size.y, size.z];
+            BlockType[,,] results = new BlockType[size.x, size.y, size.z];
 
-        int i = 0;
+            int i = 0;
             for (int x = 0; x < size.x; x++)
             {
                 for (int y = 0; y < size.y; y++)
@@ -45,7 +49,8 @@ internal class ChunkDataByteConverter
                 }
             }
 
-        return results;
+            return results;
 
+        }
     }
 }

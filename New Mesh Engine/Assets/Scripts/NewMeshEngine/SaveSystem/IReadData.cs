@@ -1,7 +1,11 @@
 using UnityEngine;
 
-internal interface IReadData
+namespace MeshEngine.SaveSystem
 {
-    public ChunkData[,,] GetChunkData(Bounds bounds);
-    public ChunkData[,] GetChunkData(SquareBoundXZ bounds);
+
+    internal interface IReadData
+    {
+        public ChunkData[,,] GetChunkData(Bounds bounds);
+        public ChunkData[,] GetChunkData(SquareBoundXZ bounds);
+    }
 }
