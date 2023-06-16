@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public interface IChunkLoader
+internal interface IChunkLoader
 {
-    public ChunkData GetChunkData(Vector3 worldPosition);
+    internal ChunkData GetChunkData(Vector3 worldPosition);
+
 }

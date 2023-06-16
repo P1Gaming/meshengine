@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public interface IMeshGenerator
+internal interface IMeshGenerator
 {
     public void StartGeneratingMesh(ChunkData chunkData);
     public event Action<ChunkData, Mesh> OnMeshGenerated;
