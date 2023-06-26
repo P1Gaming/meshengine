@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System;
 using UnityEngine;
+using MeshEngine.SaveSystem;
 
 //For non-monobehvaiour classes that need to be instantiated and their references are required by other classes.
 internal static class ResourceReferenceKeeper
@@ -15,6 +16,8 @@ internal static class ResourceReferenceKeeper
         /*resourceReferences[typeof(IMeshGenerator)] = new MeshGenerator();
         resourceReferences[typeof(ISaveDate)] = new ReadData();
         resourceReferences[typeof(IReadData)] = new SaveData();*/
+        resourceReferences[typeof(IMeshGenerator)] = UnityEngine.Object.FindObjectOfType<MeshGenerator>();
+        resourceReferences[typeof(IReadData)] = new ChunkDataReaderDummy();
     }
     public static T GetResource<T>() where T : class
     {
