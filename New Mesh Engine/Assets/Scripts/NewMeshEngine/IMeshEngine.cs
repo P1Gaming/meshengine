@@ -1,30 +1,22 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
+/// <summary>
+/// Responsible for outside communication with other classes to allow them to interface with the mesh/save data.
+/// </summary>
 public interface IMeshEngine
 {
-    BlockType WhichBlock(Ray ray, Vector3 collisionPoint);
-    bool TryAddBlock(Ray ray, BlockType blockType);
-    bool TryAddBlock(Vector3 position, BlockType blockType);
-    bool TryRemoveBlock(Ray ray);
-    bool TryRemoveBlock(Vector3 position);
-    bool TryGetBlockCentre(Ray ray, Vector3 collisionPoint, out Vector3 blockCentre);
+    public BlockType GetBlockType(Vector3Int position);
+    public bool TryAddBlock(BlockTypeWithPosition block);
+    public bool TryAddBlock(Vector3Int position, BlockType blockType);
+    public bool TryRemoveBlock(Vector3Int position);
+    public bool TryRemoveBlock(Vector3Int position, out BlockType removedType);
+    public bool IsBlockThere(Vector3Int position);
+    public Vector3 GetBlockCentre(Vector3 position);
 
-    bool IsBlockThere(Vector3 position);
-
-    Vector3 GetBlockCentre(Vector3 position);
-
-    UnityAction<Bounds> OnChunkLoaded();
-
-    UnityAction<Bounds> OnChunkUnloaded();
-
-    UnityAction OnWorldLoaded();
-
-    void AddBlocks(List<BlockTypeWithPosition> blocksToAdd);
-
-    void RemoveBlocks(List<Vector3Int> positionOfBlocksToRemove);
-    //List<BlockTypeWithPosition> RemoveBlocks(List<Vector3Int> positionOfBlocksToRemove); // Potentially Will need to be implemented to get block drops 
-
+    public void AddBlocks(List<BlockTypeWithPosition> blocksToAdd);
+    List<BlockTypeWithPosition> RemoveBlocks(List<Vector3Int> positionOfBlocksToRemove);
 }
