@@ -26,12 +26,16 @@ internal class RequestHandler : IRequestHandler
         int z = blockToBeAdded.Position.z - chunkDataToBeChanged.position.z;
         var chunkData = chunkDataToBeChanged.Data;
 
+        Debug.Log("Placed Block at: " + blockToBeAdded.Position);
+        /*
         chunkData[x, y, z] = blockToBeAdded.BlockType;
 
         chunkDataToBeChanged.OverwriteBlockTypeData(chunkData, false);
 
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
 
+        Debug.Log("Added " + blockToBeAdded.BlockType.ToString() + " at position " + blockToBeAdded.Position);
+        */
         return true;
     }
 
@@ -48,7 +52,10 @@ internal class RequestHandler : IRequestHandler
         int z = position.z - chunkDataToBeChanged.position.z;
         var chunkData = chunkDataToBeChanged.Data;
 
-        return chunkData[x, y, z];
+        Debug.Log("Block at position: " + position);
+
+        return BlockType.Air;
+        //return chunkData[x, y, z];
     }
 
     /// <summary>
@@ -64,7 +71,10 @@ internal class RequestHandler : IRequestHandler
         int z = position.z - chunkDataToBeChanged.position.z;
         var chunkData = chunkDataToBeChanged.Data;
 
-        return chunkData[x, y, z] != BlockType.Air;
+        Debug.Log("There is a block at " + position + "?");
+
+        return false;
+        //return chunkData[x, y, z] != BlockType.Air;
     }
 
     /// <summary>
@@ -92,6 +102,9 @@ internal class RequestHandler : IRequestHandler
 
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
 
-        return new BlockTypeWithPosition(blockDrop, position);
+        Debug.Log("Remove Block at position: " + position);
+
+        return new BlockTypeWithPosition(BlockType.Air, position);
+        //return new BlockTypeWithPosition(blockDrop, position);
     }
 }
