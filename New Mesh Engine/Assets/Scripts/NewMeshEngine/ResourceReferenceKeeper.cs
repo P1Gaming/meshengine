@@ -17,7 +17,12 @@ internal static class ResourceReferenceKeeper
         resourceReferences[typeof(ISaveDate)] = new ReadData();
         resourceReferences[typeof(IReadData)] = new SaveData();*/
         resourceReferences[typeof(IMeshGenerator)] = UnityEngine.Object.FindObjectOfType<MeshGenerator>();
-        resourceReferences[typeof(IReadData)] = new ChunkDataReaderDummy();
+
+        SaveSystem save = new SaveSystem(Application.persistentDataPath, "map");
+
+        resourceReferences[typeof(IReadData)] = save;
+        resourceReferences[typeof(ISaveData)] = save;
+
     }
     public static T GetResource<T>() where T : class
     {
