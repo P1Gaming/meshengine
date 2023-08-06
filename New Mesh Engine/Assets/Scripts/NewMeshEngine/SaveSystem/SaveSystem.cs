@@ -272,7 +272,7 @@ namespace MeshEngine.SaveSystem
 
             index = position.x * xMultiplier + position.y * yMultiplier + position.z * zMultiplier;
 
-            if (index <= numberOfChunks)
+            if (index >= numberOfChunks)
             {
                 index = -1;
             }
