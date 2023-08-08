@@ -9,14 +9,13 @@ using UnityEngine.Events;
 /// </summary>
 public interface IMeshEngine
 {
+    public List<bool> AddBlocks(List<BlockTypeWithPosition> blocksToAdd);
     public BlockType GetBlockType(Vector3Int position);
-    public bool TryAddBlock(BlockTypeWithPosition block);
+    public bool IsBlockAtPosition(Vector3Int position);
+    public List<bool> TryRemoveBlocks(List<Vector3Int> positionOfBlocksToRemove, out List<BlockTypeWithPosition> blocks);
     public bool TryAddBlock(Vector3Int position, BlockType blockType);
+    public bool TryAddBlock(BlockTypeWithPosition block);
     public bool TryRemoveBlock(Vector3Int position);
-    public bool TryRemoveBlock(Vector3Int position, out BlockType removedType);
-    public bool IsBlockThere(Vector3Int position);
-    public Vector3 GetBlockCentre(Vector3 position);
+    public bool TryRemoveBlock(Vector3Int position, out BlockTypeWithPosition removedType);
 
-    public void AddBlocks(List<BlockTypeWithPosition> blocksToAdd);
-    List<BlockTypeWithPosition> RemoveBlocks(List<Vector3Int> positionOfBlocksToRemove);
 }

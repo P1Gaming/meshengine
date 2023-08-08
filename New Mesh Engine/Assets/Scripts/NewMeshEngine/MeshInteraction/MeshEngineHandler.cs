@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MeshEngineHandler : MonoBehaviour
+public class MeshEngineHandler : MonoBehaviour, IMeshEngine
 {
     internal IRequestHandler _requestHandler;
 
@@ -16,7 +16,7 @@ public class MeshEngineHandler : MonoBehaviour
     /// Add the given blocks to their assigned positions.
     /// </summary>
     /// <param name="blocksToAdd">Blocks to add at the position.</param>
-    public static List<bool> AddBlocks(List<BlockTypeWithPosition> blocksToAdd)
+    public List<bool> AddBlocks(List<BlockTypeWithPosition> blocksToAdd)
     {
         List<bool> successfullyAdded = new List<bool>();
 
@@ -28,12 +28,12 @@ public class MeshEngineHandler : MonoBehaviour
         return successfullyAdded;
     }
 
-    public static BlockType GetBlockType(Vector3Int position)
+    public BlockType GetBlockType(Vector3Int position)
     {
         return ResourceReferenceKeeper.GetResource<IRequestHandler>().GetBlockAtPosition(position);
     }
 
-    public static bool IsBlockAtPosition(Vector3Int position)
+    public bool IsBlockAtPosition(Vector3Int position)
     {
         return ResourceReferenceKeeper.GetResource<IRequestHandler>().IsBlockAtPosition(position);
     }
@@ -44,7 +44,7 @@ public class MeshEngineHandler : MonoBehaviour
     /// <param name="positionOfBlocksToRemove">The positions to remove the blocks from.</param>
     /// <param name="blocks">The Blocks that were removed</param>
     /// <returns></returns>
-    public static List<bool> TryRemoveBlocks(List<Vector3Int> positionOfBlocksToRemove, out List<BlockTypeWithPosition> blocks)
+    public List<bool> TryRemoveBlocks(List<Vector3Int> positionOfBlocksToRemove, out List<BlockTypeWithPosition> blocks)
     {
         List<bool> successfulBlockRemovals = new List<bool>();
         List<BlockTypeWithPosition> blocksRemoved = new List<BlockTypeWithPosition>();
@@ -69,21 +69,21 @@ public class MeshEngineHandler : MonoBehaviour
     /// <param name="position">The location to add the block at.</param>
     /// <param name="blockType">The block to add.</param>
     /// <returns></returns>
-    public static bool TryAddBlock(Vector3Int position, BlockType blockType) => TryAddBlock(new BlockTypeWithPosition(blockType, position));
+    public bool TryAddBlock(Vector3Int position, BlockType blockType) => TryAddBlock(new BlockTypeWithPosition(blockType, position));
 
     /// <summary>
     /// Add block to the mesh/save at position given.
     /// </summary>
     /// <param name="block">The block with position to be added</param>
     /// <returns>If the block was succesfully added.</returns>
-    public static bool TryAddBlock(BlockTypeWithPosition block)
+    public bool TryAddBlock(BlockTypeWithPosition block)
     {
         return ResourceReferenceKeeper.GetResource<IRequestHandler>().AddBlockAtPosition(block);
     }
 
-    public static bool TryRemoveBlock(Vector3Int position) => TryRemoveBlock(position, out BlockTypeWithPosition removed);
+    public bool TryRemoveBlock(Vector3Int position) => TryRemoveBlock(position, out BlockTypeWithPosition removed);
 
-    public static bool TryRemoveBlock(Vector3Int position, out BlockTypeWithPosition removedType)
+    public bool TryRemoveBlock(Vector3Int position, out BlockTypeWithPosition removedType)
     {
         removedType = ResourceReferenceKeeper.GetResource<IRequestHandler>().RemoveBlockAtPosition(position);
 
