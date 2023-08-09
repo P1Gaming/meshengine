@@ -8,6 +8,8 @@ using MeshEngine.SaveSystem;
 internal static class ResourceReferenceKeeper
 {
     static Dictionary<Type, object> resourceReferences = new();
+    static string twoDFileName = "test2D";
+    static string path = "C:/temp/meshengine";
     static ResourceReferenceKeeper()
     {
         //This is where we instantiate the classes and store them in the disctionary.
@@ -17,11 +19,10 @@ internal static class ResourceReferenceKeeper
         resourceReferences[typeof(ISaveDate)] = new ReadData();
         resourceReferences[typeof(IReadData)] = new SaveData();*/
         resourceReferences[typeof(IMeshGenerator)] = UnityEngine.Object.FindObjectOfType<MeshGenerator>();
-
-        SaveSystem save = new SaveSystem(Application.persistentDataPath, "map");
-
-        resourceReferences[typeof(IReadData)] = save;
-        resourceReferences[typeof(ISaveData)] = save;
+        resourceReferences[typeof(IChunkLoader)] = UnityEngine.Object.FindObjectOfType<ChunkLoader>();
+        resourceReferences[typeof(ISaveData)] = new MeshEngineSaveSystem(path, twoDFileName, new Vector2Int(20, 20));
+        resourceReferences[typeof(IReadData)] = new ChunkDataReaderDummy();
+        resourceReferences[typeof(IRequestHandler)] = new RequestHandler();
 
     }
     public static T GetResource<T>() where T : class
