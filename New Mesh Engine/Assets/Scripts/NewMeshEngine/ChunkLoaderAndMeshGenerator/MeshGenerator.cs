@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
+using RoundedVoxels;
 internal class MeshGenerator : MonoBehaviour, IMeshGenerator
 {
     /* #region  UnitCubeNormalizedVertices */
@@ -20,10 +21,14 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
                +             +
                3+++++++++++++2
         */
-    public static readonly Vector3[] UnitCubeNormalizedVertices =
+    [Range(0, 1f)]
+    [SerializeField] float bevel;
+    [Range(0, 10)]
+    [SerializeField] int smoothness;
+    public static readonly Vector3[] UnitCubeVertices =
     {
-        new Vector3(-1, 1, -1), new Vector3(1, 1, -1), new Vector3(1, -1, -1), new Vector3(-1, -1, -1),
-        new Vector3(-1, 1, 1), new Vector3(1, 1, 1), new Vector3(1, -1, 1), new Vector3(-1, -1, 1)
+        new Vector3(-0.5f, 0.5f, -0.5f), new Vector3(0.5f, 0.5f, -0.5f), new Vector3(0.5f, -0.5f, -0.5f), new Vector3(-0.5f, -0.5f, -0.5f),
+        new Vector3(-0.5f, 0.5f, 0.5f), new Vector3(0.5f, 0.5f, 0.5f), new Vector3(0.5f, -0.5f, 0.5f), new Vector3(-0.5f, -0.5f, 0.5f)
     };
     /* #endregion */
     public event Action<ChunkData, Mesh> OnMeshGenerated;
@@ -93,8 +98,7 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
             generatingMesh = false;
         });
     }
-
-    MeshData CalculateMeshData(ChunkData chunkData)
+    static MeshData CalculateMeshData(ChunkData chunkData)
     {
         List<Vector3> vertices = new List<Vector3>();
         List<int> triangles = new List<int>();
@@ -158,10 +162,10 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
 
     static void AddFaceVertices(ref List<Vector3> vertices, Vector3 blockPosition, int vertex0, int vertex1, int vertex2, int vertex3)
     {
-        vertices.Add(blockPosition + UnitCubeNormalizedVertices[vertex0]);
-        vertices.Add(blockPosition + UnitCubeNormalizedVertices[vertex1]);
-        vertices.Add(blockPosition + UnitCubeNormalizedVertices[vertex2]);
-        vertices.Add(blockPosition + UnitCubeNormalizedVertices[vertex3]);
+        vertices.Add(blockPosition + UnitCubeVertices[vertex0]);
+        vertices.Add(blockPosition + UnitCubeVertices[vertex1]);
+        vertices.Add(blockPosition + UnitCubeVertices[vertex2]);
+        vertices.Add(blockPosition + UnitCubeVertices[vertex3]);
     }
     static void AddFaceTriangles(ref List<int> triangles, int verticesCount)
     {
@@ -173,7 +177,7 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
         triangles.Add(verticesCount - 4 + 3);
     }
 
-    struct ChunkDataAndMeshData
+    class ChunkDataAndMeshData
     {
         public ChunkData chunkData;
         public MeshData meshData;
@@ -182,16 +186,5 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
             this.chunkData = chunkData;
             this.meshData = meshData;
         }
-    }
-
-    struct MeshData
-    {
-        public List<Vector3> vertices;
-        public List<int> triangles;
-        public MeshData(List<Vector3> vertices, List<int> triangles)
-        {
-            this.vertices = vertices;
-            this.triangles = triangles;
-        }
-    }
+    }    
 }
