@@ -20,7 +20,12 @@ internal static class ResourceReferenceKeeper
         resourceReferences[typeof(IReadData)] = new SaveData();*/
         resourceReferences[typeof(IMeshGenerator)] = UnityEngine.Object.FindObjectOfType<MeshGenerator>();
         resourceReferences[typeof(IChunkLoader)] = UnityEngine.Object.FindObjectOfType<ChunkLoader>();
-        resourceReferences[typeof(ISaveData)] = new MeshEngineSaveSystem(path, twoDFileName, new Vector2Int(20, 20));
+
+        SaveSystem save = new SaveSystem(path, twoDFileName);
+
+        resourceReferences[typeof(IReadData)] = save;
+        resourceReferences[typeof(ISaveData)] = save;
+
         resourceReferences[typeof(IReadData)] = new ChunkDataReaderDummy();
         resourceReferences[typeof(IRequestHandler)] = new RequestHandler();
 

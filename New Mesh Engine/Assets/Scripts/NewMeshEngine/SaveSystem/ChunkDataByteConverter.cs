@@ -29,10 +29,10 @@ namespace MeshEngine.SaveSystem
             return saveData;
         }
 
-        public static BlockType[,,] ConvertByteToChunkBlockTypeData(Vector3Int position, Vector3Int size, byte[] saveData)
+        public static BlockType[,,] ConvertByteToChunkBlockTypeData(Vector3Int size, byte[] saveData)
         {
-            ushort[] uShortSaveData = new ushort[(saveData.Length - 1) / 2];
-            Buffer.BlockCopy(saveData, 1, uShortSaveData, 0, saveData.Length - 1);
+            ushort[] uShortSaveData = new ushort[(saveData.Length) / 2];
+            Buffer.BlockCopy(saveData, 0, uShortSaveData, 0, saveData.Length - 1);
 
             BlockType[,,] results = new BlockType[size.x, size.y, size.z];
 

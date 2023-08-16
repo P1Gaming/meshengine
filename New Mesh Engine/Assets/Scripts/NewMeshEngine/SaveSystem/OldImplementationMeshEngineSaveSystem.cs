@@ -5,7 +5,7 @@ using UnityEngine;
 namespace MeshEngine.SaveSystem
 {
 
-    internal class MeshEngineSaveSystem : ISaveData, IReadData
+    internal class OldImplementationMeshEngineSaveSystem : ISaveData, IReadData
     {
         // the chunk size, used to calculate byte size. Prehaps read this from the world at later date
         private readonly Vector3Int chunkSize = new Vector3Int(16, 256, 16);
@@ -31,7 +31,7 @@ namespace MeshEngine.SaveSystem
         /// <param name="savePath"></param>
         /// <param name="filename"></param>
         /// <param name="worldSize"></param>
-        public MeshEngineSaveSystem(string savePath, string filename, Vector2Int worldSize)
+        public OldImplementationMeshEngineSaveSystem(string savePath, string filename, Vector2Int worldSize)
         {
             this.worldSize = new Vector3Int(worldSize.x,1,worldSize.y);
             
@@ -64,7 +64,7 @@ namespace MeshEngine.SaveSystem
         /// <param name="savePath"></param>
         /// <param name="filename"></param>
         /// <param name="worldSize"></param>
-        public MeshEngineSaveSystem(string savePath, string filename, Vector3Int worldSize)
+        public OldImplementationMeshEngineSaveSystem(string savePath, string filename, Vector3Int worldSize)
         {
             this.worldSize = worldSize;
 
@@ -104,7 +104,7 @@ namespace MeshEngine.SaveSystem
                     for (int i = 0; i < chunks; i++)
                     {
                         byte[] saveData = new byte[chunkSizeInBytes];
-
+                        
                         saveData[0] = 1;
 
                         writer.Write(saveData);
@@ -194,7 +194,7 @@ namespace MeshEngine.SaveSystem
                         if (ReadSingelChunkFromFile(ChunkFileIndex, out byte[] savedData))
                         {
                             data = new ChunkData(pos, chunkSize);
-                            data.OverwriteBlockTypeData(ChunkDataByteConverter.ConvertByteToChunkBlockTypeData(pos, chunkSize, savedData), false);
+                            data.OverwriteBlockTypeData(ChunkDataByteConverter.ConvertByteToChunkBlockTypeData(pos, savedData), false);
                         }
 
                         //ChunkData chunkData = new ChunkData(pos,chunkSize);
