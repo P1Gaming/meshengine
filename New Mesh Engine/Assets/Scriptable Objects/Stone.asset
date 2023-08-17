@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3635d21a7de78074c83a68116e275718, type: 3}
+  m_Name: Stone
+  m_EditorClassIdentifier: 
+  BlockName: Stone Block
+  Description: Blocks that exist under the upper layers of the island  all the way
+    to the bottom.
+  Id: 3
+  Texture: {fileID: 0}
