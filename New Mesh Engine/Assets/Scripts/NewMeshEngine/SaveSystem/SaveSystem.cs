@@ -197,7 +197,7 @@ namespace MeshEngine.SaveSystem
 
             if (isSaved)
             {
-                long byteOffset = GetFileChunkOffset(index) - 1;
+                long byteOffset = GetFileChunkOffset(index);
                 // Read the bytes representing the struct using a BinaryReader.
                 using (BinaryReader reader = new BinaryReader(fileStream, System.Text.Encoding.Default, true))
                 {

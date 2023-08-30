@@ -9,10 +9,9 @@ namespace MeshEngine.SaveSystem
     {
         public static byte[] GetSaveData(ChunkData chunkData)
         {
-            byte[] saveData = new byte[(chunkData.size.x * chunkData.size.y * chunkData.size.z) * 2 + 1];
-            saveData[0] = chunkData.isEmpty ? (byte)1 : (byte)0;
+            byte[] saveData = new byte[(chunkData.size.x * chunkData.size.y * chunkData.size.z) * 2];
 
-            int i = 1;
+            int i = 0;
 
             for (int x = 0; x < chunkData.size.x; x++)
             {
