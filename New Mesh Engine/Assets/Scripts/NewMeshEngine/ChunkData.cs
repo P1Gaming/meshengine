@@ -70,5 +70,16 @@ internal class ChunkData
             Data[position.x, position.y, position.z] = blockType;
         }
     }
+    
+    //TESTING
+    /// <summary>
+    /// Add a blocktype and the specified position
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="blockType"></param>
+    public void OverwriteBlockDataAtPosition(Vector3Int pos, BlockType newBlockType)
+    {
+        
+    }
 
 }
