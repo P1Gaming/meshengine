@@ -44,21 +44,30 @@ namespace MeshEngine.SaveSystem
 
             numberOfChunks = worldSizeInChunks.x * worldSizeInChunks.y * worldSizeInChunks.z;
             savedChunksByteStorage = numberOfChunks * sizeof(int);
-            chunkSizeInBytes = (WorldInfo.ChunkDimensions.x * WorldInfo.ChunkDimensions.y * WorldInfo.ChunkDimensions.z) * 2;
+            chunkSizeInBytes =
+                (WorldInfo.ChunkDimensions.x * WorldInfo.ChunkDimensions.y * WorldInfo.ChunkDimensions.z) * 2;
             saveFileFullPath = Path.Combine(savePath, $"{filename}{fileExtension}");
 
             if (!Directory.Exists(savePath))
             {
                 Directory.CreateDirectory(savePath);
             }
-            bool createNewFile = !File.Exists(saveFileFullPath);
 
-            fileStream = new FileStream(saveFileFullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            bool createNewFile = !File.Exists(saveFileFullPath);
+            try
+            {
+                fileStream = new FileStream(saveFileFullPath, FileMode.OpenOrCreate, FileAccess.ReadWrite);
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError("Unable to create a stream to the intended file");
+            }
+
             disposed = false;
 
             if (createNewFile)
             {
-                CreateNewFile();
+                InitializeNewFile();
             }
             else
             {
@@ -67,15 +76,54 @@ namespace MeshEngine.SaveSystem
         }
 
         #region Save to File
+
+        /// <summary>
+        /// Save the specified chunkdata to the correct position in the file
+        /// </summary>
+        /// <param name="chunkData"></param>
+        public bool SaveChunkData(ChunkData chunkData)
+        {
+            int index = GetChunkWorldIndex(chunkData.position);
+
+            if (index == -1)
+            {
+                return false;
+            }
+
+            bool addToFileChunkIndexs = !IsChunkSaved(index);
+            long binOffset = GetFileChunkOffset(index);
+
+            byte[] saveData = ChunkDataByteConverter.GetSaveData(chunkData);
+            try
+            {
+                WriteToFile(binOffset, saveData);
+                if (addToFileChunkIndexs)
+                {
+                    fileChunksIndexs[index] = currentChunkFileIndex;
+                    currentChunkFileIndex++;
+                    SaveFileChunkIndexes();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.LogError(e.Message);
+                return false;
+            }
+
+
+            return true;
+        }
+
         /// <summary>
         /// Create a new save file, and initialize it with the FileChunkIndexs Array
         /// </summary>
-        private void CreateNewFile()
+        private void InitializeNewFile()
         {
             fileChunksIndexs = new int[numberOfChunks];
 
             SaveFileChunkIndexes();
         }
+
         /// <summary>
         /// Saves where chunks have been saved to the beginning of the file.
         /// </summary>
@@ -87,51 +135,42 @@ namespace MeshEngine.SaveSystem
                 byte[] intBytes = BitConverter.GetBytes(fileChunksIndexs[i]);
                 intBytes.CopyTo(buffer, i * sizeof(int));
             }
-            using (BinaryWriter writer = new BinaryWriter(fileStream, System.Text.Encoding.Default, true))
+
+            try
             {
-                fileStream.Seek(0, SeekOrigin.Begin);
-                writer.Write(buffer);
+                using (BinaryWriter writer = new BinaryWriter(fileStream, System.Text.Encoding.Default, true))
+                {
+                    fileStream.Seek(0, SeekOrigin.Begin);
+                    writer.Write(buffer);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Failed to write chunk index array", e);
             }
         }
 
-        /// <summary>
-        /// Save the specified chunkdata to the correct position in the file
-        /// </summary>
-        /// <param name="chunkData"></param>
-        public void SaveChunkData(ChunkData chunkData)
-        {
-            int index = GetChunkWorldIndex(chunkData.position);
-
-            if(index == -1)
-            {
-                return;
-            }
-
-            bool addToFileChunkIndexs = !IsChunkSaved(index);
-            long binOffset = GetFileChunkOffset(index);
-
-            byte[] saveData = ChunkDataByteConverter.GetSaveData(chunkData);
-
-            WriteToFile(binOffset, saveData);
-            if (addToFileChunkIndexs)
-            {
-                fileChunksIndexs[index] = currentChunkFileIndex;
-                currentChunkFileIndex++;
-                SaveFileChunkIndexes();
-            }
-        }
 
         private void WriteToFile(long binOffset, byte[] saveData)
         {
-            using (BinaryWriter writer = new BinaryWriter(fileStream, System.Text.Encoding.Default, true))
+            try
             {
-                fileStream.Seek(binOffset, SeekOrigin.Begin);
-                writer.Write(saveData);
+                using (BinaryWriter writer = new BinaryWriter(fileStream, System.Text.Encoding.Default, true))
+                {
+                    fileStream.Seek(binOffset, SeekOrigin.Begin);
+                    writer.Write(saveData);
+                }
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Failed to write chunk to file", e);
             }
         }
+
         #endregion
 
         #region Load from File
+
         /// <summary>
         /// Load the Array that keeps track on where chunks are saved. 
         /// </summary>
@@ -147,7 +186,6 @@ namespace MeshEngine.SaveSystem
                 {
                     fileChunksIndexs[i] = BitConverter.ToInt32(buffer, i * sizeof(int));
                 }
-
             }
 
             UpdateCurrentChunkFileIndex();
@@ -155,7 +193,7 @@ namespace MeshEngine.SaveSystem
 
         public ChunkData[,] GetChunkData(SquareBoundXZ bounds)
         {
-            int boundLength = (int)(bounds.Extent * 2);
+            int boundLength = (int) (bounds.Extent * 2);
             ChunkData[,] results = new ChunkData[boundLength + 1, boundLength + 1];
 
             float xMin = bounds.Center.x - bounds.Extent;
@@ -163,9 +201,9 @@ namespace MeshEngine.SaveSystem
             float xMax = bounds.Center.x + bounds.Extent;
             float zMax = bounds.Center.y + bounds.Extent;
 
-            for (int x = (int)xMin; x < (int)xMax + 1; x++)
+            for (int x = (int) xMin; x < (int) xMax + 1; x++)
             {
-                for (int z = (int)zMin; z < (int)zMax; z++)
+                for (int z = (int) zMin; z < (int) zMax; z++)
                 {
                     Vector2Int pos = new Vector2Int(x, z);
                     if (IsOutsideWorldBounds(pos)) continue;
@@ -175,13 +213,15 @@ namespace MeshEngine.SaveSystem
                     if (ReadSingelChunkFromFile(ChunkFileIndex, out byte[] savedData))
                     {
                         data = new ChunkData(pos, WorldInfo.ChunkDimensions);
-                        data.OverwriteBlockTypeData(ChunkDataByteConverter.ConvertByteToChunkBlockTypeData(WorldInfo.ChunkDimensions, savedData), false);
+                        data.OverwriteBlockTypeData(
+                            ChunkDataByteConverter.ConvertByteToChunkBlockTypeData(WorldInfo.ChunkDimensions,
+                                savedData), false);
                     }
 
-                    results[x - (int)xMin, z - (int)zMin] = data;
+                    results[x - (int) xMin, z - (int) zMin] = data;
                 }
-
             }
+
             return results;
         }
 
@@ -204,7 +244,6 @@ namespace MeshEngine.SaveSystem
                     fileStream.Seek(byteOffset, SeekOrigin.Begin);
                     data = reader.ReadBytes(chunkSizeInBytes);
                 }
-
             }
             else
             {
@@ -213,9 +252,11 @@ namespace MeshEngine.SaveSystem
 
             return isSaved;
         }
+
         #endregion
 
         #region Support methods
+
         private void UpdateCurrentChunkFileIndex()
         {
             currentChunkFileIndex = 1;
@@ -257,6 +298,7 @@ namespace MeshEngine.SaveSystem
             {
                 fileByteOffset += (currentChunkFileIndex - 1) * chunkSizeInBytes;
             }
+
             fileByteOffset++;
             return fileByteOffset;
         }
@@ -286,10 +328,11 @@ namespace MeshEngine.SaveSystem
             {
                 return true;
             }
+
             return false;
         }
-        #endregion
 
+        #endregion
 
 
         #region Dispose handling
@@ -319,6 +362,7 @@ namespace MeshEngine.SaveSystem
         {
             Dispose(false);
         }
+
         #endregion
     }
 }
