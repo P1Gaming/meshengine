@@ -18,6 +18,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
     SquareBoundXZ currentBounds;
     readonly Dictionary<Vector3Int, MeshFilter> loadedChunks = new();
     ChunkObjectPool chunkObjectPool;
+    Vector2Int currentChunkPosition;
     private void Awake()
     {
         chunkDataReader = ResourceReferenceKeeper.GetResource<IReadData>();
@@ -47,8 +48,17 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
     // Update is called once per frame
     void Update()
     {
+        var worldBottomLeftPoint = -WorldInfo.WorldDimensions / 2;
+        var numberOfChunksX = Mathf.FloorToInt((player.position.x - worldBottomLeftPoint.x) / WorldInfo.ChunkDimensions.x);
+        var numberOfChunksY = Mathf.FloorToInt((player.position.z - worldBottomLeftPoint.z) / WorldInfo.ChunkDimensions.z);
+        if(numberOfChunksX - 1 == currentChunkPosition.x && numberOfChunksY - 1 == currentChunkPosition.y)
+        {
+            return;
+        }
+
         RefreshActiveChunks();
         ResetBoundsIfNeeded();
+        currentChunkPosition = new Vector2Int(numberOfChunksX - 1, numberOfChunksY - 1);
     }
     private void OnMeshGenerated(ChunkData chunkData, Mesh mesh)
     {
