@@ -474,3 +474,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6a19ae7eadc2ee4084e35408ab73c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bevel: 0.3
+  smoothness: 2
