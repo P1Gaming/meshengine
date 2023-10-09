@@ -118,7 +118,7 @@ namespace MeshEngine.SaveSystem
         /// Save the specified chunkdata to the correct position in the file
         /// </summary>
         /// <param name="chunkData"></param>
-        public void SaveChunkData(ChunkData chunkData)
+        public bool SaveChunkData(ChunkData chunkData)
         {
             long binOffset = GetChunkByteIndex(chunkData.position) * chunkSizeInBytes;
             byte[] saveData = ChunkDataByteConverter.GetSaveData(chunkData);
@@ -133,6 +133,7 @@ namespace MeshEngine.SaveSystem
                 }
             }
 
+            return true;
         }
 
 
