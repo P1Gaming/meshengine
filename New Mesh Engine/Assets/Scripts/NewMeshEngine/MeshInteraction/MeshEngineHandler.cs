@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class MeshEngineHandler : MonoBehaviour, IMeshEngine
+public class MeshEngineHandler : IMeshEngine
 {
     internal IRequestHandler _requestHandler;
 
@@ -30,7 +30,7 @@ public class MeshEngineHandler : MonoBehaviour, IMeshEngine
 
     public BlockType GetBlockType(Vector3Int position)
     {
-        return ResourceReferenceKeeper.GetResource<IRequestHandler>().GetBlockAtPosition(position);
+            return ResourceReferenceKeeper.GetResource<IRequestHandler>().GetBlockAtPosition(position);
     }
 
     public bool IsBlockAtPosition(Vector3Int position)

@@ -84,8 +84,16 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
             return null;
         }
 
-        int xIndex = Clamp0(Mathf.CeilToInt(Mathf.Abs(currentBounds.Min.x - worldPosition.x) / WorldInfo.ChunkDimensions.x) - 1);
-        int zIndex = Clamp0(Mathf.CeilToInt(Mathf.Abs(currentBounds.Min.y - worldPosition.z) / WorldInfo.ChunkDimensions.z) - 1);
+        //int xIndex = Clamp0(Mathf.CeilToInt(Mathf.Abs(currentBounds.Min.x - worldPosition.x) / WorldInfo.ChunkDimensions.x) - 1);
+        //int zIndex = Clamp0(Mathf.CeilToInt(Mathf.Abs(currentBounds.Min.y - worldPosition.z) / WorldInfo.ChunkDimensions.z) - 1);
+        Vector2Int chunkIndex = WorldInfo.WorldPositionToChunkXZIndex(worldPosition);
+        int xIndex = chunkIndex.x;
+        int zIndex = chunkIndex.y;
+
+        if (chunkData[chunkIndex.x, chunkIndex.y] == null)
+        {
+            chunkData[xIndex, zIndex] = new ChunkData(new Vector2Int(xIndex, zIndex), WorldInfo.ChunkDimensions);
+        }
 
         return chunkData[xIndex, zIndex];
     }

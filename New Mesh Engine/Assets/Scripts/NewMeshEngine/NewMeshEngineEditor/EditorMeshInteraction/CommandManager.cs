@@ -1,5 +1,5 @@
-﻿using System.Collections.Generic;
-using UnityEditor;
+﻿using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
@@ -7,6 +7,8 @@ public class CommandManager : MonoBehaviour
 {
     private FloodingStack<ICommand> undoStack = new FloodingStack<ICommand>(10);
     private Stack<ICommand> redoStack = new Stack<ICommand>();
+
+    public int UndoStackCount => undoStack.Count;
 
     public void ExecuteCommand(ICommand command)
     {
@@ -38,7 +40,15 @@ public class CommandManager : MonoBehaviour
         }
     }
 
-    
+    internal ICommand GetCurrentUndoCommand()
+    {
+        return undoStack.Peek();
+    }
+
+    internal ICommand GetCurrentRedoCommand()
+    {
+        return redoStack.Peek();
+    }
 }
 
 

@@ -1,5 +1,7 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 
 public class FloodingStack<T> : IEnumerable<T>
 {
@@ -51,5 +53,10 @@ public class FloodingStack<T> : IEnumerable<T>
     IEnumerator IEnumerable.GetEnumerator()
     {
         return GetEnumerator();
+    }
+
+    internal T Peek()
+    {
+        return itemList.LastOrDefault();
     }
 }

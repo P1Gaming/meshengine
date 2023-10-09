@@ -7,11 +7,11 @@ using UnityEngine;
 /// </summary>
 internal interface IRequestHandler
 {
-    public bool IsBlockAtPosition(Vector3Int position);
+    public bool IsBlockAtPosition(Vector3Int worldPosition);
 
-    public BlockType GetBlockAtPosition(Vector3Int position);
+    public BlockType GetBlockAtPosition(Vector3Int worldPosition);
 
     public bool AddBlockAtPosition(BlockTypeWithPosition blockToBeAdded);
 
-    public BlockTypeWithPosition RemoveBlockAtPosition(Vector3Int position);
+    public BlockTypeWithPosition RemoveBlockAtPosition(Vector3Int worldPosition);
 }

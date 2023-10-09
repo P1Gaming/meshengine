@@ -20,22 +20,23 @@ internal class RequestHandler : IRequestHandler
             return false;
         }
 
-        ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(blockToBeAdded.Position);
-        int x = blockToBeAdded.Position.x - chunkDataToBeChanged.position.x;
-        int y = blockToBeAdded.Position.y - chunkDataToBeChanged.position.y;
-        int z = blockToBeAdded.Position.z - chunkDataToBeChanged.position.z;
+        ChunkData chunkDataToBeChanged =
+            ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(blockToBeAdded.Position);
+        int x = blockToBeAdded.Position.x - (chunkDataToBeChanged.position.x * WorldInfo.ChunkDimensions.x);
+        int y = blockToBeAdded.Position.y - chunkDataToBeChanged.position.y * WorldInfo.ChunkDimensions.y;
+        int z = blockToBeAdded.Position.z - chunkDataToBeChanged.position.z * WorldInfo.ChunkDimensions.z;
         var chunkData = chunkDataToBeChanged.Data;
 
         Debug.Log("Placed Block at: " + blockToBeAdded.Position);
-        /*
+
         chunkData[x, y, z] = blockToBeAdded.BlockType;
 
-        chunkDataToBeChanged.OverwriteBlockTypeData(chunkData, false);
+        chunkDataToBeChanged.AddBlockAtIndex(new Vector3Int(x, y, z), blockToBeAdded.BlockType);
 
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
 
         Debug.Log("Added " + blockToBeAdded.BlockType.ToString() + " at position " + blockToBeAdded.Position);
-        */
+
         return true;
     }
 
@@ -46,15 +47,20 @@ internal class RequestHandler : IRequestHandler
     /// <returns>The block type of the block at teh position.</returns>
     public BlockType GetBlockAtPosition(Vector3Int position)
     {
+        BlockType result = BlockType.Air;
         ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
-        int x = position.x - chunkDataToBeChanged.position.x;
-        int y = position.y - chunkDataToBeChanged.position.y;
-        int z = position.z - chunkDataToBeChanged.position.z;
-        var chunkData = chunkDataToBeChanged.Data;
+        if (chunkDataToBeChanged != null)
+        {
+            int x = position.x - (chunkDataToBeChanged.position.x * WorldInfo.ChunkDimensions.x);
+            int y = position.y - (chunkDataToBeChanged.position.y * WorldInfo.ChunkDimensions.y);
+            int z = position.z - (chunkDataToBeChanged.position.z * WorldInfo.ChunkDimensions.z);
+            var chunkData = chunkDataToBeChanged.Data;
 
-        Debug.Log("Block at position: " + position);
+            result = chunkData[x, y, z];
+            Debug.Log("Block at position: " + position +" is " +result);
+        }
 
-        return BlockType.Air;
+        return result;
         //return chunkData[x, y, z];
     }
 
@@ -66,14 +72,18 @@ internal class RequestHandler : IRequestHandler
     public bool IsBlockAtPosition(Vector3Int position)
     {
         ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
-        int x = position.x - chunkDataToBeChanged.position.x;
-        int y = position.y - chunkDataToBeChanged.position.y;
-        int z = position.z - chunkDataToBeChanged.position.z;
-        var chunkData = chunkDataToBeChanged.Data;
-
+        bool result = false;
+        if (chunkDataToBeChanged != null)
+        {
+            int x = position.x - (chunkDataToBeChanged.position.x * WorldInfo.ChunkDimensions.x);
+            int y = position.y - (chunkDataToBeChanged.position.y * WorldInfo.ChunkDimensions.y);
+            int z = position.z - (chunkDataToBeChanged.position.z * WorldInfo.ChunkDimensions.z);
+            var chunkData = chunkDataToBeChanged.Data;
+            result = chunkData[x, y, z] == BlockType.Air ? false : true;
+        }
         Debug.Log("There is a block at " + position + "?");
 
-        return false;
+        return result;
         //return chunkData[x, y, z] != BlockType.Air;
     }
 
