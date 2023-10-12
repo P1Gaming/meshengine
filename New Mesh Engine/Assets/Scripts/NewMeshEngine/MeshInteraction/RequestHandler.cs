@@ -20,22 +20,12 @@ internal class RequestHandler : IRequestHandler
             return false;
         }
 
-        ChunkData chunkDataToBeChanged =
-            ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(blockToBeAdded.Position);
-        int x = blockToBeAdded.Position.x - (chunkDataToBeChanged.position.x * WorldInfo.ChunkDimensions.x);
-        int y = blockToBeAdded.Position.y - chunkDataToBeChanged.position.y * WorldInfo.ChunkDimensions.y;
-        int z = blockToBeAdded.Position.z - chunkDataToBeChanged.position.z * WorldInfo.ChunkDimensions.z;
-        var chunkData = chunkDataToBeChanged.Data;
-
-        Debug.Log("Placed Block at: " + blockToBeAdded.Position);
-
-        chunkData[x, y, z] = blockToBeAdded.BlockType;
-
-        chunkDataToBeChanged.AddBlockAtIndex(new Vector3Int(x, y, z), blockToBeAdded.BlockType);
+        ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(blockToBeAdded.Position);
+        Vector3Int positionInChunk = WorldInfo.WorldPositionToPositionInChunk(blockToBeAdded.Position);
+        
+        chunkDataToBeChanged.AddBlockAtIndex(positionInChunk, blockToBeAdded.BlockType);
 
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
-
-        Debug.Log("Added " + blockToBeAdded.BlockType.ToString() + " at position " + blockToBeAdded.Position);
 
         return true;
     }
