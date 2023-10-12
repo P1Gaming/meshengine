@@ -85,14 +85,14 @@ namespace MeshEngine.SaveSystem
         {
             int index = GetChunkWorldIndex(chunkData.position);
 
-            if (index == -1)
+            if (index == -1 || chunkData.isEmpty)
             {
                 return false;
             }
 
             bool addToFileChunkIndexs = !IsChunkSaved(index);
             long binOffset = GetFileChunkOffset(index);
-
+            
             byte[] saveData = ChunkDataByteConverter.GetSaveData(chunkData);
             try
             {

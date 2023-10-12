@@ -9,7 +9,7 @@ internal static class ResourceReferenceKeeper
 {
     static Dictionary<Type, object> resourceReferences = new();
     static string twoDFileName = "test2D";
-    static string path = "C:/temp/meshengine";
+    public static string SAVEPATH = "C:/temp/meshengine";
     static ResourceReferenceKeeper()
     {
         //This is where we instantiate the classes and store them in the disctionary.
@@ -23,7 +23,7 @@ internal static class ResourceReferenceKeeper
         //Add MeshEngineHandler to resources
         resourceReferences[typeof(IMeshEngine)] = new MeshEngineHandler();
 
-        SaveSystem save = new SaveSystem(path, twoDFileName);
+        SaveSystem save = new SaveSystem(SAVEPATH, twoDFileName);
 
         resourceReferences[typeof(IReadData)] = save;
         resourceReferences[typeof(ISaveData)] = save;
