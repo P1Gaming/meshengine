@@ -26,8 +26,19 @@ internal class RequestHandler : IRequestHandler
         chunkDataToBeChanged.AddBlockAtIndex(positionInChunk, blockToBeAdded.BlockType);
 
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
+        ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunkDataToBeChanged);
 
         return true;
+    }
+
+    public void OverWriteBlockAtPosition(BlockTypeWithPosition blockToBeAdded)
+    {
+        ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(blockToBeAdded.Position);
+        Vector3Int positionInChunk = WorldInfo.WorldPositionToPositionInChunk(blockToBeAdded.Position);
+        
+        chunkDataToBeChanged.AddBlockAtIndex(positionInChunk, blockToBeAdded.BlockType);
+
+        ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
     }
 
     /// <summary>

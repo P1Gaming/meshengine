@@ -81,6 +81,11 @@ public class MeshEngineHandler : IMeshEngine
         return ResourceReferenceKeeper.GetResource<IRequestHandler>().AddBlockAtPosition(block);
     }
 
+    public void OverWriteBlock(BlockTypeWithPosition block)
+    {
+        
+    }
+
     public bool TryRemoveBlock(Vector3Int position) => TryRemoveBlock(position, out BlockTypeWithPosition removed);
 
     public bool TryRemoveBlock(Vector3Int position, out BlockTypeWithPosition removedType)

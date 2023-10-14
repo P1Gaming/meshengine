@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 public class SaveTests
 {
-    private SaveSystem GetNewSaveSystem(out Action CloseSystem, out int sizeX, out int sizeY, out int sizeZ)
+    private SaveSystem GetNewSaveSystem(out Action closeSystem, out int sizeX, out int sizeY, out int sizeZ)
     {
         
         const string testFileName = "testSave";
@@ -16,7 +16,7 @@ public class SaveTests
         sizeZ = WorldInfo.ChunkDimensions.z;
 
         SaveSystem saveSystem = new SaveSystem(ResourceReferenceKeeper.SAVEPATH, testFileName);
-        CloseSystem = () =>
+        closeSystem = () =>
         {
             saveSystem.Dispose();
             File.Delete(Path.Combine(ResourceReferenceKeeper.SAVEPATH,$"{testFileName}.meshchunks"));

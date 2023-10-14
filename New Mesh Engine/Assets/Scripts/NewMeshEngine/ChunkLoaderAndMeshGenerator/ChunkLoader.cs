@@ -32,10 +32,12 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
     private void OnEnable()
     {
         meshGenerator.OnMeshGenerated += OnMeshGenerated;
+        meshGenerator.OnMeshModified += OnMeshModified;
     }
     private void OnDisable()
     {
         meshGenerator.OnMeshGenerated -= OnMeshGenerated;
+        meshGenerator.OnMeshModified -= OnMeshModified;
     }
     // Start is called before the first frame update
     void Start()
@@ -70,6 +72,15 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         loadedChunks[chunkData.position].gameObject.SetActive(true);
     }
 
+    private void OnMeshModified(ChunkData chunkData, Mesh mesh)
+    {
+        if(!loadedChunks.ContainsKey(chunkData.position))
+        {
+            return;
+        }
+        loadedChunks[chunkData.position].mesh = mesh;
+    }
+
     public ChunkData GetChunkData(Vector3 worldPosition)
     {
         if(chunkData == null)
@@ -96,16 +107,6 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         return chunkData[xIndex, zIndex];
     }
 
-    static int Clamp0(int value)
-    {
-        if(value < 0)
-        {
-            return 0;
-        }
-
-        return value;
-    }
-
     void ResetBoundsIfNeeded()
     {
         var vectorDiff = new Vector2(player.position.x, player.position.z) - currentBounds.Center;
@@ -120,7 +121,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         RecalculateBounds();
         chunkData = chunkDataReader.GetChunkData(currentBounds);
 
-        Vector3 firstChunkCentre = -WorldInfo.WorldDimensions / 2 + WorldInfo.ChunkDimensions / 2;
+        Vector3 firstChunkCentre = WorldInfo.ChunkDimensions / 2;
         for (int i=loadedChunks.Count - 1; i >= 0; i--)
         {
             var chunkIndex = loadedChunks.ElementAt(i).Key;            
@@ -195,6 +196,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         {
             return;
         }
+        
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(new Vector3(currentBounds.Center.x, 0, currentBounds.Center.y), new Vector3(currentBounds.Size, WorldInfo.ChunkDimensions.y, currentBounds.Size));
         Gizmos.color = Color.green;
