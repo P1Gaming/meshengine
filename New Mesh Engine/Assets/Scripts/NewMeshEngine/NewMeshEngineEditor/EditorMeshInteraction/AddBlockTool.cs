@@ -5,12 +5,14 @@ public class AddBlockTool : SelectionTool
 {
     WorldPositionSelection worldPositionSelection;
     private Func<BlockType> GetBlockTypeAction;
-    private Vector3Int selectedWorldPosition;
+    private Vector3 selectedWorldPosition;
+    Transform indicator;
 
-    public AddBlockTool(WorldPositionSelection worldPositionSelection, Func<BlockType> GetBlockType)
+    public AddBlockTool(WorldPositionSelection worldPositionSelection, Func<BlockType> GetBlockType, Transform indicator)
     {
         this.worldPositionSelection = worldPositionSelection;
         GetBlockTypeAction = GetBlockType;
+        this.indicator = indicator;
     }
 
     public override ICommand GetResults()
@@ -18,15 +20,17 @@ public class AddBlockTool : SelectionTool
         return new AddBlockCommand(selectedWorldPosition, GetBlockTypeAction());
     }
 
-    
+
     public override void Tick(IInput input)
     {
-        if(input.PointerClick())
+        selectedWorldPosition = worldPositionSelection.GetClosestHitPoint(30);
+        indicator.position = Vector3Int.RoundToInt(selectedWorldPosition);
+        if (input.PointerClick())
         {
-            selectedWorldPosition = worldPositionSelection.GetClosestHitPoint(30);
-            InvokeFinnished(new SelectionToolsEventArgs( SelectionToolsEventArgs.SelectionResult.Completed));
+
+            InvokeFinnished(new SelectionToolsEventArgs(SelectionToolsEventArgs.SelectionResult.Completed));
         }
-        
+
     }
 }
 
@@ -34,8 +38,8 @@ public class BoxAddBlockTool : SelectionTool
 {
     WorldPositionSelection worldPositionSelection;
     private Func<BlockType> GetBlockTypeAction;
-    private Vector3Int? selectedFirstPosition;
-    private Vector3Int selectedSecondPosition;
+    private Vector3? selectedFirstPosition;
+    private Vector3 selectedSecondPosition;
 
     public BoxAddBlockTool(WorldPositionSelection worldPositionSelection, Func<BlockType> GetBlockType)
     {
@@ -61,4 +65,4 @@ public class BoxAddBlockTool : SelectionTool
     {
         throw new NotImplementedException();
     }
-} 
+}

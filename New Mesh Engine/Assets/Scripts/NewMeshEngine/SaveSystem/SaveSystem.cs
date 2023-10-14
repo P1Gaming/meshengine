@@ -92,7 +92,7 @@ namespace MeshEngine.SaveSystem
 
             bool addToFileChunkIndexs = !IsChunkSaved(index);
             long binOffset = GetFileChunkOffset(index);
-            
+
             byte[] saveData = ChunkDataByteConverter.GetSaveData(chunkData);
             try
             {
@@ -193,22 +193,31 @@ namespace MeshEngine.SaveSystem
 
         public ChunkData[,] GetChunkData(SquareBoundXZ bounds)
         {
-            int boundLength = (int) (bounds.Extent * 2);
-            ChunkData[,] results = new ChunkData[boundLength + 1, boundLength + 1];
+                int boundLength = (int)(bounds.Extent * 2);
 
-            float xMin = bounds.Center.x - bounds.Extent;
-            float zMin = bounds.Center.y - bounds.Extent;
-            float xMax = bounds.Center.x + bounds.Extent;
-            float zMax = bounds.Center.y + bounds.Extent;
+            int xMin = (int)MathF.Max((int)(bounds.Center.x - bounds.Extent)/WorldInfo.ChunkDimensions.x,0);
+            int zMin = (int)MathF.Max((int)(bounds.Center.y - bounds.Extent)/WorldInfo.ChunkDimensions.z,0);
+            int xMax = (int)(bounds.Center.x + bounds.Extent)/WorldInfo.ChunkDimensions.x;
+            int zMax = (int)(bounds.Center.y + bounds.Extent)/WorldInfo.ChunkDimensions.z;
 
-            for (int x = (int) xMin; x < (int) xMax + 1; x++)
+            int sizeX = xMax - xMin;
+            int sizeZ = zMax - zMin;
+            ChunkData[,] results = new ChunkData[sizeX, sizeZ];
+
+
+            for (int x = (int)xMin; x < (int)xMax; x++)
             {
-                for (int z = (int) zMin; z < (int) zMax; z++)
+                for (int z = (int)zMin; z < (int)zMax; z++)
                 {
+
                     Vector2Int pos = new Vector2Int(x, z);
-                    if (IsOutsideWorldBounds(pos)) continue;
+                    if (IsOutsideWorldBounds(pos))
+                    {
+                        continue;
+                    }
 
                     int ChunkFileIndex = GetChunkWorldIndex(new Vector3Int(pos.x, 0, pos.y));
+                    
                     ChunkData data = null;
                     if (ReadSingelChunkFromFile(ChunkFileIndex, out byte[] savedData))
                     {
@@ -218,7 +227,7 @@ namespace MeshEngine.SaveSystem
                                 savedData), false);
                     }
 
-                    results[x - (int) xMin, z - (int) zMin] = data;
+                    results[x - (int)xMin, z - (int)zMin] = data;
                 }
             }
 

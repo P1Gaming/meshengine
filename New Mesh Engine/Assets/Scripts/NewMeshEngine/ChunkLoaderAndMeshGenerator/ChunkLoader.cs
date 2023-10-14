@@ -50,7 +50,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
     // Update is called once per frame
     void Update()
     {
-        var worldBottomLeftPoint = -WorldInfo.WorldDimensions / 2;
+        var worldBottomLeftPoint = Vector3Int.zero;
         var numberOfChunksX = Mathf.FloorToInt((player.position.x - worldBottomLeftPoint.x) / WorldInfo.ChunkDimensions.x);
         var numberOfChunksY = Mathf.FloorToInt((player.position.z - worldBottomLeftPoint.z) / WorldInfo.ChunkDimensions.z);
         if(numberOfChunksX - 1 == currentChunkPosition.x && numberOfChunksY - 1 == currentChunkPosition.y)
@@ -70,6 +70,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         }
         loadedChunks[chunkData.position].mesh = mesh;
         loadedChunks[chunkData.position].gameObject.SetActive(true);
+        loadedChunks[chunkData.position].GetComponent<MeshCollider>().sharedMesh = mesh;
     }
 
     private void OnMeshModified(ChunkData chunkData, Mesh mesh)
@@ -79,6 +80,9 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
             return;
         }
         loadedChunks[chunkData.position].mesh = mesh;
+        loadedChunks[chunkData.position].GetComponent<MeshCollider>().sharedMesh = mesh;
+        RefreshActiveChunks();
+        
     }
 
     public ChunkData GetChunkData(Vector3 worldPosition)
@@ -143,7 +147,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
 
     void RefreshActiveChunks()
     {
-        Vector3 firstChunkCentre = -WorldInfo.WorldDimensions / 2 + WorldInfo.ChunkDimensions / 2;
+        Vector3 firstChunkCentre = WorldInfo.ChunkDimensions / 2;
         foreach (var chunkData in chunkData)
         {
             if(chunkData == null)

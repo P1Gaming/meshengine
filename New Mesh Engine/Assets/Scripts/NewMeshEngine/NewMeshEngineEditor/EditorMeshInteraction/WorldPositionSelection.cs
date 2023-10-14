@@ -10,7 +10,7 @@ public class WorldPositionSelection : MonoBehaviour
     {
         //hitPlane.SetActive(false);
     }
-    public Vector3Int GetClosestHitPoint(float maxDistance)
+    public Vector3 GetClosestHitPoint(float maxDistance)
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -27,10 +27,9 @@ public class WorldPositionSelection : MonoBehaviour
                     hitindexClosestToPlayer = i;
                 }
             }
-
-            return Vector3Int.CeilToInt(hitResults[hitindexClosestToPlayer].point);
+            return hitResults[hitindexClosestToPlayer].point;
         }
-        return new Vector3Int(int.MaxValue, int.MaxValue,int.MaxValue);
+        return new Vector3(int.MaxValue, int.MaxValue,int.MaxValue);
 
         /*else
         {

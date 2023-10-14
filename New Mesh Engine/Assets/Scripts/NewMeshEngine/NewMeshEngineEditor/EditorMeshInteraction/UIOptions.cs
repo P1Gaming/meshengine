@@ -8,6 +8,8 @@ public class UIOptions : MonoBehaviour
 {
     [SerializeField] BlockType debugBlocktype;
     [SerializeField] WorldPositionSelection worldPositionSelection;
+    [SerializeField] Transform indicator;
+    
     SelectionTool selectionTool;
     private bool isSelectionActive = false;
     CommandManager commandManager;
@@ -16,7 +18,7 @@ public class UIOptions : MonoBehaviour
 
     public void SelectAddBlock()
     {
-        AddBlockTool addBlockTool = new AddBlockTool(worldPositionSelection, GetBlockType);
+        AddBlockTool addBlockTool = new AddBlockTool(worldPositionSelection, GetBlockType,indicator);
         ChangeTool(addBlockTool);
     }
 

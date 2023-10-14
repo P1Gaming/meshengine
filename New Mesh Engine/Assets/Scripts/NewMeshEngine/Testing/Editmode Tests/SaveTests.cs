@@ -39,7 +39,7 @@ public class SaveTests
         saveSystem.SaveChunkData(chunk1);
         saveSystem.SaveChunkData(chunk2);
 
-        SquareBoundXZ bounds = new SquareBoundXZ(new Vector2(1, 1), 2);
+        SquareBoundXZ bounds = new SquareBoundXZ(new Vector2(16, 16), 32);
         var loadedChunks = saveSystem.GetChunkData(bounds);
         var chunk = loadedChunks[1, 1];
         
@@ -62,7 +62,7 @@ public class SaveTests
         saveSystem.SaveChunkData(chunk1);
         saveSystem.SaveChunkData(chunk2);
 
-        SquareBoundXZ bounds = new SquareBoundXZ(new Vector2(1, 1), 2);
+        SquareBoundXZ bounds = new SquareBoundXZ(new Vector2(16, 16), 32);
         var loadedChunks = saveSystem.GetChunkData(bounds);
         closeSaveSystem();
         

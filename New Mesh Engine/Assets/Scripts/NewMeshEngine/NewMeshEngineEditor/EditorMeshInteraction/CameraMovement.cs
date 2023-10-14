@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour
 {
-    private float _speed = 5f;
-    private float _mouseSensitivity = 100f;
+    private float _speed = 20f;
+    private float _mouseSensitivity = 200f;
 
     void Update()
     {
@@ -24,6 +24,7 @@ public class CameraMovement : MonoBehaviour
 
             transform.Rotate(Vector3.up, mouseInput.x * Time.deltaTime * _mouseSensitivity);
             transform.Rotate(Vector3.right, -mouseInput.y * Time.deltaTime * _mouseSensitivity);
+            
         }
     }
     private void OnDrawGizmos()
