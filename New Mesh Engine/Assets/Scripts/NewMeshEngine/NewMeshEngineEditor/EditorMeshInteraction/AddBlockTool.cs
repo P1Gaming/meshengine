@@ -7,6 +7,7 @@ public class AddBlockTool : SelectionTool
     private Func<BlockType> GetBlockTypeAction;
     private Vector3 selectedWorldPosition;
     Transform indicator;
+    float distance = 30;
 
     public AddBlockTool(WorldPositionSelection worldPositionSelection, Func<BlockType> GetBlockType, Transform indicator)
     {
@@ -23,7 +24,19 @@ public class AddBlockTool : SelectionTool
 
     public override void Tick(IInput input)
     {
-        selectedWorldPosition = worldPositionSelection.GetClosestHitPoint(30);
+        //Change distance depending on higherLowerInput
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            Debug.Log("hej");
+        }
+        var higherLowerInput = input.LowerHigherInput();
+        if (Mathf.Abs(higherLowerInput) > 0.1)
+        {
+            distance += higherLowerInput * Time.deltaTime * 10;
+            distance = Mathf.Clamp(distance, 0, 100);
+        }
+
+        selectedWorldPosition = worldPositionSelection.GetClosestHitPoint(distance);
         indicator.position = Vector3Int.RoundToInt(selectedWorldPosition);
         if (input.PointerClick())
         {

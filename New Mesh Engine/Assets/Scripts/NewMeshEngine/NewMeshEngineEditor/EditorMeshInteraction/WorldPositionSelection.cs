@@ -11,10 +11,10 @@ public class WorldPositionSelection : MonoBehaviour
         //hitPlane.SetActive(false);
     }
     public Vector3 GetClosestHitPoint(float maxDistance)
-    {
+    {hitPlane.transform.localPosition = Vector3.forward * maxDistance;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        int hits = Physics.RaycastNonAlloc(ray, hitResults, 30);
+        int hits = Physics.RaycastNonAlloc(ray, hitResults, 100);
         if (hits > 0)
         {
             int hitindexClosestToPlayer = 0;
