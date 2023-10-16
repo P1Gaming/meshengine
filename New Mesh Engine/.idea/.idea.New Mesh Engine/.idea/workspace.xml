@@ -3,10 +3,8 @@
   <component name="ChangeListManager">
     <list default="true" id="d4e8e704-d3c3-4446-b3be-de686afafdcb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.New Mesh Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.New Mesh Engine/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/RequestHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/RequestHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/AddBlockTool.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/AddBlockTool.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/SelectionTool.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/SelectionTool.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/UIOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/UIOptions.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/ResourceReferenceKeeper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/ResourceReferenceKeeper.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,10 +53,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="19820">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="17352">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="19820" />
+      <option name="pid" value="17352" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -118,13 +116,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs</url>
-          <line>90</line>
+          <line>85</line>
           <properties documentPath="C:\UnityProjects\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\MeshInteraction\MeshEngineHandler.cs" initialLine="92" containingFunctionPresentation="method 'TryRemoveBlock'">
             <startOffsets>
-              <option value="3298" />
+              <option value="3216" />
             </startOffsets>
             <endOffsets>
-              <option value="3399" />
+              <option value="3317" />
             </endOffsets>
           </properties>
           <option name="timeStamp" value="33" />

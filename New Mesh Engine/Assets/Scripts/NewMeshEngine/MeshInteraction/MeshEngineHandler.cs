@@ -28,7 +28,7 @@ public class MeshEngineHandler : IMeshEngine
 
     public BlockType GetBlockType(Vector3Int position)
     {
-            return ResourceReferenceKeeper.GetResource<IRequestHandler>().GetBlockAtPosition(position);
+        return ResourceReferenceKeeper.GetResource<IRequestHandler>().GetBlockAtPosition(position);
     }
 
     public bool IsBlockAtPosition(Vector3Int position)
@@ -78,12 +78,7 @@ public class MeshEngineHandler : IMeshEngine
     {
         return ResourceReferenceKeeper.GetResource<IRequestHandler>().AddBlockAtPosition(block);
     }
-
-    public void OverWriteBlock(BlockTypeWithPosition block)
-    {
-        
-    }
-
+    
     public bool TryRemoveBlock(Vector3Int position) => TryRemoveBlock(position, out BlockTypeWithPosition removed);
 
     public bool TryRemoveBlock(Vector3Int position, out BlockTypeWithPosition removedType)
