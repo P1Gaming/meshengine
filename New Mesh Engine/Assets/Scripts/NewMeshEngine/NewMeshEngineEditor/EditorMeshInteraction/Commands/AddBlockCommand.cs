@@ -12,6 +12,7 @@ public class AddBlockCommand : ICommand
         this.position = position;
         this.blockType = blockType;
     }
+    
     public bool TryExecute()
     {
         previousBlockType = ResourceReferenceKeeper.GetResource<IMeshEngine>().GetBlockType(Vector3Int.RoundToInt(position));

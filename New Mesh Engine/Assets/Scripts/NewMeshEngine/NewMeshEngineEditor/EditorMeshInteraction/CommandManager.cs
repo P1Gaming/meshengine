@@ -16,7 +16,6 @@ public class CommandManager : MonoBehaviour
         {
             undoStack.Push(command);
             redoStack.Clear();
-            Debug.Log(undoStack.Count);
         }
     }
 

@@ -58,7 +58,6 @@ internal class RequestHandler : IRequestHandler
             var chunkData = chunkDataToBeChanged.Data;
 
             result = chunkData[x, y, z];
-            Debug.Log("Block at position: " + position +" is " +result);
         }
 
         return result;
@@ -82,10 +81,8 @@ internal class RequestHandler : IRequestHandler
             var chunkData = chunkDataToBeChanged.Data;
             result = chunkData[x, y, z] == BlockType.Air ? false : true;
         }
-        Debug.Log("There is a block at " + position + "?");
 
         return result;
-        //return chunkData[x, y, z] != BlockType.Air;
     }
 
     /// <summary>

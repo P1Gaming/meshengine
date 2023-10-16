@@ -60,7 +60,7 @@ namespace MeshEngine.SaveSystem
             }
             catch (Exception ex)
             {
-                Debug.LogError("Unable to create a stream to the intended file");
+                Debug.LogError($"{ex.Message}");
             }
 
             disposed = false;

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using static SelectionTool;
 
@@ -11,8 +9,6 @@ public class UIOptions : MonoBehaviour
     [SerializeField] Transform indicator;
     
     SelectionTool selectionTool;
-    private bool isSelectionActive = false;
-    CommandManager commandManager;
     IInput input = new MouseAndKeyboardInput();
 
 
@@ -56,10 +52,6 @@ public class UIOptions : MonoBehaviour
         }
     }
 
-
-
-
-
     private void Update()
     {
         if (selectionTool == null) return;
@@ -71,34 +63,5 @@ public class UIOptions : MonoBehaviour
         }
 
 
-    }
-
-    private void Awake()
-    {
-        commandManager = FindObjectOfType<CommandManager>();
-    }
-}
-public interface IInput
-{
-    bool PointerClick();
-    bool Cancel();
-    float LowerHigherInput();
-}
-public class MouseAndKeyboardInput : IInput
-{
-    public bool Cancel()
-    {
-        return Input.GetMouseButtonDown(1) || Input.GetKeyDown(KeyCode.Escape);
-    }
-
-    public bool PointerClick()
-    {
-        return Input.GetMouseButtonDown(0);
-    }
-
-    public float LowerHigherInput()
-    {
-        // return scrollwheel input
-        return Input.mouseScrollDelta.y;
     }
 }
