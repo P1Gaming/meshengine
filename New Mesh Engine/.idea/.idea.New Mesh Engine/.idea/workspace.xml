@@ -3,10 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="d4e8e704-d3c3-4446-b3be-de686afafdcb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.New Mesh Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.New Mesh Engine/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/ChunkLoaderAndMeshGenerator/ChunkLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/ChunkLoaderAndMeshGenerator/ChunkLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/RequestHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/RequestHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/Testing/Editmode Tests/SaveTests.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/Testing/Editmode Tests/SaveTests.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,10 +44,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="26232">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="19820">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="26232" />
+      <option name="pid" value="19820" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -67,6 +64,7 @@
       <option name="presentableId" value="Default" />
       <updated>1697221445559</updated>
       <workItem from="1697221473883" duration="596000" />
+      <workItem from="1697457866909" duration="628000" />
     </task>
     <servers />
   </component>
@@ -83,17 +81,44 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/ChunkLoaderAndMeshGenerator/MeshGenerator.cs</url>
-          <line>64</line>
-          <properties documentPath="C:\UnityProjects\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\ChunkLoaderAndMeshGenerator\MeshGenerator.cs" initialLine="64" containingFunctionPresentation="method 'ModifyMesh'">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/Commands/AddBlockCommand.cs</url>
+          <line>27</line>
+          <properties documentPath="C:\UnityProjects\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\NewMeshEngineEditor\EditorMeshInteraction\Commands\AddBlockCommand.cs" initialLine="27" isMultiMethodBreakpoint="true">
+            <option name="multiMethodBreakpoint" value="true" />
             <startOffsets>
-              <option value="2400" />
+              <option value="-1" />
             </startOffsets>
             <endOffsets>
-              <option value="2421" />
+              <option value="-1" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="31" />
+          <option name="timeStamp" value="32" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs</url>
+          <line>92</line>
+          <properties documentPath="C:\UnityProjects\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\MeshInteraction\MeshEngineHandler.cs" initialLine="92" containingFunctionPresentation="method 'TryRemoveBlock'">
+            <startOffsets>
+              <option value="3350" />
+            </startOffsets>
+            <endOffsets>
+              <option value="3451" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="33" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/Commands/AddBlockCommand.cs</url>
+          <line>16</line>
+          <properties documentPath="C:\UnityProjects\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\NewMeshEngineEditor\EditorMeshInteraction\Commands\AddBlockCommand.cs" initialLine="16" containingFunctionPresentation="method 'TryExecute'">
+            <startOffsets>
+              <option value="377" />
+            </startOffsets>
+            <endOffsets>
+              <option value="494" />
+            </endOffsets>
+          </properties>
+          <option name="timeStamp" value="34" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

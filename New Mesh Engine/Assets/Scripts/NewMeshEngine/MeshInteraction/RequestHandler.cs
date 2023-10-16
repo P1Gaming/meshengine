@@ -101,7 +101,7 @@ internal class RequestHandler : IRequestHandler
         }
 
         ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
-        Vector3Int posInChunk = WorldInfo.WorldPositionToPositionInChunk(chunkDataToBeChanged.position);
+        Vector3Int posInChunk = WorldInfo.WorldPositionToPositionInChunk(position);
         
         var chunkData = chunkDataToBeChanged.Data;
 
