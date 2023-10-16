@@ -8,6 +8,8 @@ public class UIOptions : MonoBehaviour
 {
     [SerializeField] BlockType debugBlocktype;
     [SerializeField] WorldPositionSelection worldPositionSelection;
+    [SerializeField] Transform indicator;
+    
     SelectionTool selectionTool;
     private bool isSelectionActive = false;
     CommandManager commandManager;
@@ -16,7 +18,7 @@ public class UIOptions : MonoBehaviour
 
     public void SelectAddBlock()
     {
-        AddBlockTool addBlockTool = new AddBlockTool(worldPositionSelection, GetBlockType);
+        AddBlockTool addBlockTool = new AddBlockTool(worldPositionSelection, GetBlockType,indicator);
         ChangeTool(addBlockTool);
     }
 
@@ -80,6 +82,7 @@ public interface IInput
 {
     bool PointerClick();
     bool Cancel();
+    float LowerHigherInput();
 }
 public class MouseAndKeyboardInput : IInput
 {
@@ -91,5 +94,11 @@ public class MouseAndKeyboardInput : IInput
     public bool PointerClick()
     {
         return Input.GetMouseButtonDown(0);
+    }
+
+    public float LowerHigherInput()
+    {
+        // return scrollwheel input
+        return Input.mouseScrollDelta.y;
     }
 }

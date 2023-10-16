@@ -7,7 +7,7 @@ using UnityEngine.TestTools;
 
 public class SaveTests
 {
-    private SaveSystem GetNewSaveSystem(out Action CloseSystem, out int sizeX, out int sizeY, out int sizeZ)
+    private SaveSystem GetNewSaveSystem(out Action closeSystem, out int sizeX, out int sizeY, out int sizeZ)
     {
         
         const string testFileName = "testSave";
@@ -16,7 +16,7 @@ public class SaveTests
         sizeZ = WorldInfo.ChunkDimensions.z;
 
         SaveSystem saveSystem = new SaveSystem(ResourceReferenceKeeper.SAVEPATH, testFileName);
-        CloseSystem = () =>
+        closeSystem = () =>
         {
             saveSystem.Dispose();
             File.Delete(Path.Combine(ResourceReferenceKeeper.SAVEPATH,$"{testFileName}.meshchunks"));
@@ -39,7 +39,7 @@ public class SaveTests
         saveSystem.SaveChunkData(chunk1);
         saveSystem.SaveChunkData(chunk2);
 
-        SquareBoundXZ bounds = new SquareBoundXZ(new Vector2(1, 1), 2);
+        SquareBoundXZ bounds = new SquareBoundXZ(new Vector2(16, 16), 32);
         var loadedChunks = saveSystem.GetChunkData(bounds);
         var chunk = loadedChunks[1, 1];
         
@@ -62,7 +62,7 @@ public class SaveTests
         saveSystem.SaveChunkData(chunk1);
         saveSystem.SaveChunkData(chunk2);
 
-        SquareBoundXZ bounds = new SquareBoundXZ(new Vector2(1, 1), 2);
+        SquareBoundXZ bounds = new SquareBoundXZ(new Vector2(16, 16), 32);
         var loadedChunks = saveSystem.GetChunkData(bounds);
         closeSaveSystem();
         

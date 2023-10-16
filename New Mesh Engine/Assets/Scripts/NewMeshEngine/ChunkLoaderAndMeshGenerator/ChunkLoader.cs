@@ -32,10 +32,12 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
     private void OnEnable()
     {
         meshGenerator.OnMeshGenerated += OnMeshGenerated;
+        meshGenerator.OnMeshModified += OnMeshModified;
     }
     private void OnDisable()
     {
         meshGenerator.OnMeshGenerated -= OnMeshGenerated;
+        meshGenerator.OnMeshModified -= OnMeshModified;
     }
     // Start is called before the first frame update
     void Start()
@@ -48,7 +50,8 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
     // Update is called once per frame
     void Update()
     {
-        var worldBottomLeftPoint = -WorldInfo.WorldDimensions / 2;
+        var worldBottomLeftPoint = (-Vector3.one * WorldInfo.BlockSize)/2;
+
         var numberOfChunksX = Mathf.FloorToInt((player.position.x - worldBottomLeftPoint.x) / WorldInfo.ChunkDimensions.x);
         var numberOfChunksY = Mathf.FloorToInt((player.position.z - worldBottomLeftPoint.z) / WorldInfo.ChunkDimensions.z);
         if(numberOfChunksX - 1 == currentChunkPosition.x && numberOfChunksY - 1 == currentChunkPosition.y)
@@ -68,6 +71,19 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         }
         loadedChunks[chunkData.position].mesh = mesh;
         loadedChunks[chunkData.position].gameObject.SetActive(true);
+        loadedChunks[chunkData.position].GetComponent<MeshCollider>().sharedMesh = mesh;
+    }
+
+    private void OnMeshModified(ChunkData chunkData, Mesh mesh)
+    {
+        if(!loadedChunks.ContainsKey(chunkData.position))
+        {
+            return;
+        }
+        loadedChunks[chunkData.position].mesh = mesh;
+        loadedChunks[chunkData.position].GetComponent<MeshCollider>().sharedMesh = mesh;
+        RefreshActiveChunks();
+        
     }
 
     public ChunkData GetChunkData(Vector3 worldPosition)
@@ -96,16 +112,6 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         return chunkData[xIndex, zIndex];
     }
 
-    static int Clamp0(int value)
-    {
-        if(value < 0)
-        {
-            return 0;
-        }
-
-        return value;
-    }
-
     void ResetBoundsIfNeeded()
     {
         var vectorDiff = new Vector2(player.position.x, player.position.z) - currentBounds.Center;
@@ -120,7 +126,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         RecalculateBounds();
         chunkData = chunkDataReader.GetChunkData(currentBounds);
 
-        Vector3 firstChunkCentre = -WorldInfo.WorldDimensions / 2 + WorldInfo.ChunkDimensions / 2;
+        Vector3 firstChunkCentre = WorldInfo.ChunkDimensions / 2;
         for (int i=loadedChunks.Count - 1; i >= 0; i--)
         {
             var chunkIndex = loadedChunks.ElementAt(i).Key;            
@@ -142,7 +148,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
 
     void RefreshActiveChunks()
     {
-        Vector3 firstChunkCentre = -WorldInfo.WorldDimensions / 2 + WorldInfo.ChunkDimensions / 2;
+        Vector3 firstChunkCentre = (WorldInfo.ChunkDimensions / 2) - (Vector3.one*(WorldInfo.BlockSize/2));
         foreach (var chunkData in chunkData)
         {
             if(chunkData == null)
@@ -195,6 +201,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         {
             return;
         }
+        
         Gizmos.color = Color.red;
         Gizmos.DrawWireCube(new Vector3(currentBounds.Center.x, 0, currentBounds.Center.y), new Vector3(currentBounds.Size, WorldInfo.ChunkDimensions.y, currentBounds.Size));
         Gizmos.color = Color.green;

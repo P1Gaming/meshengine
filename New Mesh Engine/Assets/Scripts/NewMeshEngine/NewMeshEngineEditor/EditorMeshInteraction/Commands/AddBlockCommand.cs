@@ -3,19 +3,19 @@ using UnityEditor;
 
 public class AddBlockCommand : ICommand
 {
-    private Vector3Int position;
+    private Vector3 position;
     private BlockType blockType;
 
     private BlockType previousBlockType;
-    public AddBlockCommand(Vector3Int position, BlockType blockType)
+    public AddBlockCommand(Vector3 position, BlockType blockType)
     {
         this.position = position;
         this.blockType = blockType;
     }
     public bool TryExecute()
     {
-        previousBlockType = ResourceReferenceKeeper.GetResource<IMeshEngine>().GetBlockType(position);
-        if (ResourceReferenceKeeper.GetResource<IMeshEngine>().TryAddBlock(position, blockType))
+        previousBlockType = ResourceReferenceKeeper.GetResource<IMeshEngine>().GetBlockType(Vector3Int.RoundToInt(position));
+        if (ResourceReferenceKeeper.GetResource<IMeshEngine>().TryAddBlock(Vector3Int.RoundToInt(position), blockType))
         {
             return true;
         }
@@ -25,7 +25,8 @@ public class AddBlockCommand : ICommand
 
     public void Undo()
     {
-        ResourceReferenceKeeper.GetResource<MeshEngineHandler>().TryAddBlock(position, previousBlockType);
+        ResourceReferenceKeeper.GetResource<IMeshEngine>().TryRemoveBlock(Vector3Int.RoundToInt(position));
+        ResourceReferenceKeeper.GetResource<IMeshEngine>().TryAddBlock(Vector3Int.RoundToInt(position), previousBlockType);
     }
     public string GetCommandName() => "Add block";
 }
