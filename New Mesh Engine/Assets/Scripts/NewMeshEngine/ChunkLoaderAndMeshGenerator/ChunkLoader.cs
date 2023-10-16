@@ -89,7 +89,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
 
         return chunkData[xIndex, zIndex];
     }
-    Vector3Int FindBlock(Vector3 position,ChunkData chunk)
+    Vector3Int FindBlock(Vector3 worldPosition,ChunkData chunk)
     {
         Vector3 globalPos = position;
         Vector3 localChunkPos = transform.InverseTransformPoint(globalPos);
