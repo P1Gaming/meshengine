@@ -105,6 +105,31 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         int zIndex = chunkIndex.y;
 
         if (chunkData[xIndex, zIndex] == null)
+        return chunkData[xIndex, zIndex];
+    }
+    Vector3Int FindBlock(Vector3 worldPosition,ChunkData chunk)
+    {
+        Vector3 globalPos = position;
+        Vector3 localChunkPos = transform.InverseTransformPoint(globalPos);
+        Vector3Int localBlockPos=Vector3Int.zero;
+        localBlockPos.x = (int)localChunkPos.x + WorldInfo.ChunkDimensions.x/2;
+        localBlockPos.y = (int)localChunkPos.y + WorldInfo.ChunkDimensions.y/2;
+        localBlockPos.z = (int)localChunkPos.z + WorldInfo.ChunkDimensions.z/2;
+        //this is the index within the chunk
+        Vector3 translatedPosition = localBlockPos+new Vector3Int((int)chunk.position.x,(int)chunk.position.y,(int)chunk.position.z);
+        Vector3Int index = new Vector3Int((int)translatedPosition.x, (int)translatedPosition.y, (int)translatedPosition.z);
+        return index;
+    }
+    public BlockType GetBlockTypeInPosition(Vector3 worldPosition)
+    {
+        ChunkData chunk=GetChunkData(worldPosition);
+        Vector3Int index=FindBlock(worldPosition, chunk);
+        BlockType type = chunk.Data[index.x, index.y, index.z];
+        return type;
+    }
+    static int Clamp0(int value)
+    {
+        if(value < 0)
         {
             chunkData[xIndex, zIndex] = new ChunkData(new Vector2Int(xIndex, zIndex), WorldInfo.ChunkDimensions);
         }
