@@ -2,20 +2,12 @@
 
 public abstract class SelectionTool
 {
-    public event EventHandler SelectionToolEnded;
-    public class SelectionToolsEventArgs : EventArgs
-    { public SelectionToolsEventArgs(SelectionResult results)
-        {
-            Result = results;
-        } 
-        public enum SelectionResult { Completed, Canceled }
-        public SelectionResult Result { get; private set; }
-    }
-    protected void InvokeFinnished(SelectionToolsEventArgs args)
+    public event Action<ICommand> SelectionToolEnded;
+    
+    protected void InvokeFinnished(ICommand command)
     {
-        SelectionToolEnded?.Invoke(this, args);
+        SelectionToolEnded?.Invoke(command);
     }
     public abstract void Tick(IInput input);
     
-    public abstract ICommand GetResults();
 }

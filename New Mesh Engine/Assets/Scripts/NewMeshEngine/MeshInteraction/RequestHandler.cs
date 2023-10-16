@@ -109,9 +109,7 @@ internal class RequestHandler : IRequestHandler
 
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
 
-        Debug.Log("Remove Block at position: " + position);
         ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunkDataToBeChanged);
         return new BlockTypeWithPosition(BlockType.Air, position);
-        //return new BlockTypeWithPosition(blockDrop, position);
     }
 }

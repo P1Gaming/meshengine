@@ -9,18 +9,13 @@ public class AddBlockTool : SelectionTool
     Transform indicator;
     float distance = 30;
 
-    public AddBlockTool(WorldPositionSelection worldPositionSelection, Func<BlockType> GetBlockType, Transform indicator)
+    public AddBlockTool(WorldPositionSelection worldPositionSelection, Func<BlockType> GetBlockType,
+        Transform indicator)
     {
         this.worldPositionSelection = worldPositionSelection;
         GetBlockTypeAction = GetBlockType;
         this.indicator = indicator;
     }
-
-    public override ICommand GetResults()
-    {
-        return new AddBlockCommand(selectedWorldPosition, GetBlockTypeAction());
-    }
-
 
     public override void Tick(IInput input)
     {
@@ -29,6 +24,7 @@ public class AddBlockTool : SelectionTool
         {
             Debug.Log("hej");
         }
+
         var higherLowerInput = input.LowerHigherInput();
         if (Mathf.Abs(higherLowerInput) > 0.1)
         {
@@ -40,10 +36,8 @@ public class AddBlockTool : SelectionTool
         indicator.position = Vector3Int.RoundToInt(selectedWorldPosition);
         if (input.PointerClick())
         {
-
-            InvokeFinnished(new SelectionToolsEventArgs(SelectionToolsEventArgs.SelectionResult.Completed));
+            InvokeFinnished(new AddBlockCommand(selectedWorldPosition, GetBlockTypeAction()));
         }
-
     }
 }
 
@@ -59,6 +53,7 @@ public class BoxAddBlockTool : SelectionTool
         this.worldPositionSelection = worldPositionSelection;
         GetBlockTypeAction = GetBlockType;
     }
+
     public override void Tick(IInput input)
     {
         if (input.PointerClick())
@@ -72,10 +67,5 @@ public class BoxAddBlockTool : SelectionTool
                 selectedSecondPosition = worldPositionSelection.GetClosestHitPoint(30);
             }
         }
-    }
-
-    public override ICommand GetResults()
-    {
-        throw new NotImplementedException();
     }
 }

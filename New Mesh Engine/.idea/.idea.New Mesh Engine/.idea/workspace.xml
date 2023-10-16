@@ -2,17 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="d4e8e704-d3c3-4446-b3be-de686afafdcb" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/IInput.cs" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/IInput.cs.meta" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/.idea.New Mesh Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.New Mesh Engine/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/ChunkLoaderAndMeshGenerator/ChunkLoader.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/ChunkLoaderAndMeshGenerator/ChunkLoader.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/RequestHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/RequestHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/CommandManager.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/CommandManager.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/Commands/AddBlockCommand.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/Commands/AddBlockCommand.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/AddBlockTool.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/AddBlockTool.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/SelectionTool.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/SelectionTool.cs" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/UIOptions.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/UIOptions.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/Plip_Testing/MeshGenerationTest.cs.meta" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/SaveSystem/SaveSystem.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/SaveSystem/SaveSystem.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +15,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/31/System.Collections.Generic.cs" root0="SKIP_HIGHLIGHTING" />
