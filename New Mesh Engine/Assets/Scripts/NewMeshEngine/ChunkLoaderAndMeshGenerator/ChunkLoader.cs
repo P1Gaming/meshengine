@@ -104,6 +104,11 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
         int xIndex = chunkIndex.x;
         int zIndex = chunkIndex.y;
 
+        if (chunkData[xIndex, zIndex] == null)
+        {
+            chunkData[xIndex, zIndex] = new ChunkData(chunkIndex, WorldInfo.ChunkDimensions);
+        }
+
         return chunkData[xIndex, zIndex];
     }
     Vector3Int FindBlock(Vector3 worldPosition,ChunkData chunk)
