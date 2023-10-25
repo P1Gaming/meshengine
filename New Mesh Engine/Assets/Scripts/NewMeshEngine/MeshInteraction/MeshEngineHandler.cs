@@ -1,10 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Events;
 
-public class MeshEngineHandler : MonoBehaviour, IMeshEngine
+public class MeshEngineHandler : IMeshEngine
 {
     internal IRequestHandler _requestHandler;
 
@@ -80,7 +78,7 @@ public class MeshEngineHandler : MonoBehaviour, IMeshEngine
     {
         return ResourceReferenceKeeper.GetResource<IRequestHandler>().AddBlockAtPosition(block);
     }
-
+    
     public bool TryRemoveBlock(Vector3Int position) => TryRemoveBlock(position, out BlockTypeWithPosition removed);
 
     public bool TryRemoveBlock(Vector3Int position, out BlockTypeWithPosition removedType)

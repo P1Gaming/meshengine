@@ -7,6 +7,7 @@ using UnityEngine;
 internal class ChunkData
 {
     public bool isEmpty { get; private set; }
+
     public BlockType[,,] Data { get; private set; }
 
     public readonly Vector3Int position;
@@ -23,6 +24,7 @@ internal class ChunkData
         this.position = position;
         this.size = size;
         isEmpty = true;
+        Data = new BlockType[size.x, size.y, size.z];
     }
 
     /// <summary>
@@ -35,6 +37,7 @@ internal class ChunkData
         this.position = new Vector3Int(position.x, 0, position.y);
         this.size = size;
         isEmpty = true;
+        Data = new BlockType[size.x, size.y, size.z];
     }
     
     /// <summary>
