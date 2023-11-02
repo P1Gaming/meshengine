@@ -197,11 +197,15 @@ namespace MeshEngine.SaveSystem
 
             int xMin = (int)MathF.Max((int)(bounds.Center.x - bounds.Extent)/WorldInfo.ChunkDimensions.x,0);
             int zMin = (int)MathF.Max((int)(bounds.Center.y - bounds.Extent)/WorldInfo.ChunkDimensions.z,0);
-            int xMax = (int)(bounds.Center.x + bounds.Extent)/WorldInfo.ChunkDimensions.x;
-            int zMax = (int)(bounds.Center.y + bounds.Extent)/WorldInfo.ChunkDimensions.z;
+            int xMax = (int)MathF.Min((int)(bounds.Center.x + bounds.Extent)/WorldInfo.ChunkDimensions.x,WorldInfo.GetWorldDimensionInChunks().x);
+            int zMax = (int)MathF.Min((int)(bounds.Center.y + bounds.Extent)/WorldInfo.ChunkDimensions.z, WorldInfo.GetWorldDimensionInChunks().z);
 
             int sizeX = xMax - xMin;
             int sizeZ = zMax - zMin;
+            if (sizeX <= 0 || sizeZ <= 0)
+            {
+                return new ChunkData[0,0];
+            }
             ChunkData[,] results = new ChunkData[sizeX, sizeZ];
 
 

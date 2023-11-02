@@ -20,6 +20,11 @@ internal class RequestHandler : IRequestHandler
             return false;
         }
 
+        if (!WorldInfo.IsPositionInsideWorld(blockToBeAdded.Position))
+        {
+            return false;
+        }
+
         ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(blockToBeAdded.Position);
         Vector3Int positionInChunk = WorldInfo.WorldPositionToPositionInChunk(blockToBeAdded.Position);
         
@@ -48,6 +53,7 @@ internal class RequestHandler : IRequestHandler
     /// <returns>The block type of the block at teh position.</returns>
     public BlockType GetBlockAtPosition(Vector3Int position)
     {
+        
         BlockType result = BlockType.Air;
         ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
         if (chunkDataToBeChanged != null)
@@ -71,6 +77,10 @@ internal class RequestHandler : IRequestHandler
     /// <returns>If there was a bloc at this position.</returns>
     public bool IsBlockAtPosition(Vector3Int position)
     {
+        if (!WorldInfo.IsPositionInsideWorld(position))
+        {
+            return false;
+        }
         ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
         bool result = false;
         if (chunkDataToBeChanged != null)
@@ -92,6 +102,10 @@ internal class RequestHandler : IRequestHandler
     /// <returns>The block that was removed.</returns>
     public BlockTypeWithPosition RemoveBlockAtPosition(Vector3Int position)
     {
+        if (!WorldInfo.IsPositionInsideWorld(position))
+        {
+            return null;
+        }
         if (!IsBlockAtPosition(position))
         {
             return new BlockTypeWithPosition(BlockType.Air, position);
@@ -106,6 +120,7 @@ internal class RequestHandler : IRequestHandler
         chunkData[posInChunk.x, posInChunk.y, posInChunk.z] = BlockType.Air;
 
         chunkDataToBeChanged.OverwriteBlockTypeData(chunkData, false);
+        
 
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
 

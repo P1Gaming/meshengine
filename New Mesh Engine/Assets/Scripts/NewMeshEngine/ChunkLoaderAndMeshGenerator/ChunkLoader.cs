@@ -98,7 +98,7 @@ internal class ChunkLoader : MonoBehaviour, IChunkLoader
             return null;
         }
 
-        if(!currentBounds.Contains(worldPosition))
+        if(!currentBounds.Contains(worldPosition) || !WorldInfo.IsPositionInsideWorld(worldPosition))
         {
             Debug.LogError("Position out of bounds. Chunk data at this position isn't loaded in memory.");
             return null;
