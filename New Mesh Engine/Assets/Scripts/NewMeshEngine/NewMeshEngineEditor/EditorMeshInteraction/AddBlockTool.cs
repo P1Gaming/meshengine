@@ -20,11 +20,7 @@ public class AddBlockTool : SelectionTool
     public override void Tick(IInput input)
     {
         //Change distance depending on higherLowerInput
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            Debug.Log("hej");
-        }
-
+        
         var higherLowerInput = input.LowerHigherInput();
         if (Mathf.Abs(higherLowerInput) > 0.1)
         {

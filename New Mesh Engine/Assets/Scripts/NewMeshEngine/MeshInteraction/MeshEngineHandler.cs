@@ -28,6 +28,10 @@ public class MeshEngineHandler : IMeshEngine
 
     public BlockType GetBlockType(Vector3Int position)
     {
+        if (!WorldInfo.IsPositionInsideWorld(position))
+        {
+            return  BlockType.Air;
+        }
         return ResourceReferenceKeeper.GetResource<IRequestHandler>().GetBlockAtPosition(position);
     }
 
@@ -85,6 +89,6 @@ public class MeshEngineHandler : IMeshEngine
     {
         removedType = ResourceReferenceKeeper.GetResource<IRequestHandler>().RemoveBlockAtPosition(position);
 
-        return removedType.BlockType != BlockType.Air;
+        return WorldInfo.IsPositionInsideWorld(position) && removedType.BlockType != BlockType.Air;
     }
 }
