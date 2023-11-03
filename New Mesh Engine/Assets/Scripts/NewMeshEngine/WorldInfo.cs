@@ -46,4 +46,16 @@ public static class WorldInfo
         Vector3 chunkOffset = chunk.position*WorldInfo.ChunkDimensions;
         return chunkOffset + positionInChunk;
     }
+
+    internal static bool IsPositionInsideWorld(Vector3 position)
+    {
+        bool isInside = !(position.x < 0 || 
+                          position.y < 0 || 
+                          position.z < 0 || 
+                          position.x > WorldDimensions.x ||
+                          position.y > WorldDimensions.y || 
+                          position.z > WorldDimensions.z);
+
+        return isInside;
+    }
 }
