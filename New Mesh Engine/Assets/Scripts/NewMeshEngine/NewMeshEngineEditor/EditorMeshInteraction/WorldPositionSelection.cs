@@ -1,20 +1,18 @@
-﻿using System;
-using System.Linq;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class WorldPositionSelection : MonoBehaviour
 {
     [SerializeField] private GameObject hitPlane;
     RaycastHit[] hitResults = new RaycastHit[50];
-    private void Awake()
-    {
-        //hitPlane.SetActive(false);
-    }
-    public Vector3 GetClosestHitPoint(float maxDistance)
+    private float maxDistance = 30;
+    [SerializeField] private Transform indicator;
+    
+    
+    public Vector3 GetClosestHitPoint()
     {hitPlane.transform.localPosition = Vector3.forward * maxDistance;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
-        int hits = Physics.RaycastNonAlloc(ray, hitResults, 100);
+        int hits = Physics.RaycastNonAlloc(ray, hitResults, maxDistance+10);
         if (hits > 0)
         {
             int hitindexClosestToPlayer = 0;
@@ -27,16 +25,18 @@ public class WorldPositionSelection : MonoBehaviour
                     hitindexClosestToPlayer = i;
                 }
             }
-            return hitResults[hitindexClosestToPlayer].point;
+
+            Vector3 pos = Vector3Int.RoundToInt(hitResults[hitindexClosestToPlayer].point);
+            indicator.position = pos;
+            return pos;
         }
         return new Vector3(int.MaxValue, int.MaxValue,int.MaxValue);
+    }
 
-        /*else
-        {
-            hitPlane.transform.position = transform.position + transform.forward*10;
-            transform.rotation = Quaternion.Euler(transform.forward);
-            hitPlane.SetActive(true);
-        }*/
+    public void ChangeDistance(float value)
+    {
+        maxDistance += value;
+        maxDistance = Mathf.Clamp(maxDistance, 10, 50);
     }
 }
 

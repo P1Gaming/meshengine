@@ -663,6 +663,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hitPlane: {fileID: 536290632}
+  indicator: {fileID: 2051216111}
 --- !u!4 &677288223
 Transform:
   m_ObjectHideFlags: 0
@@ -1608,7 +1609,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 2137776916}
         m_TargetAssemblyTypeName: UIOptions, MeshEngine
-        m_MethodName: SelectAddBlock
+        m_MethodName: SelectBoxFill
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2182,4 +2183,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   debugBlocktype: 1
   worldPositionSelection: {fileID: 677288222}
-  indicator: {fileID: 2051216111}

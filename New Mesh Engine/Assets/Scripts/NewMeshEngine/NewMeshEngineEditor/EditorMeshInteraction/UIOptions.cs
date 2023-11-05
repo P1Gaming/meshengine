@@ -6,16 +6,26 @@ public class UIOptions : MonoBehaviour
 {
     [SerializeField] BlockType debugBlocktype;
     [SerializeField] WorldPositionSelection worldPositionSelection;
-    [SerializeField] Transform indicator;
 
     SelectionTool selectionTool;
-    IInput input = new MouseAndKeyboardInput();
+    private IInput input;
+
+    private void Awake()
+    {
+        input = new MouseAndKeyboardInput(worldPositionSelection);
+    }
 
 
     public void SelectAddBlock()
     {
-        AddBlockTool addBlockTool = new AddBlockTool(worldPositionSelection, GetBlockType, indicator);
+        AddBlockTool addBlockTool = new AddBlockTool(GetBlockType);
         ChangeTool(addBlockTool);
+    }
+
+    public void SelectBoxFill()
+    {
+        BoxAddBlockTool boxTool = new BoxAddBlockTool(GetBlockType);
+        ChangeTool(boxTool);
     }
 
     BlockType GetBlockType()
@@ -27,6 +37,7 @@ public class UIOptions : MonoBehaviour
     {
         if (selectionTool != null)
         {
+            selectionTool.OnCancel();
             selectionTool.SelectionToolEnded -= OnToolUsed;
         }
 
@@ -53,7 +64,8 @@ public class UIOptions : MonoBehaviour
     private void Update()
     {
         if (selectionTool == null) return;
-
+        
+        input.GetPointerPosition();
         selectionTool.Tick(input);
         if (input.Cancel())
         {
