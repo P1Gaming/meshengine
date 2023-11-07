@@ -4,7 +4,7 @@ using UnityEngine;
 public interface IInput
 {
     bool PointerClick();
-    Vector3 GetPointerPosition();
+    Vector3Int GetPointerGridPositionPosition(bool showIndicator);
     bool Cancel();
     float IncreaseOrDecrease();
 }

@@ -5,8 +5,8 @@ public class BoxAddBlockTool : SelectionTool
 {
     private Func<BlockType> GetBlockTypeAction;
     private bool selectedFirst = false;
-    private Vector3 selectedFirstPosition;
-    private Vector3 selectedSecondPosition;
+    private Vector3Int selectedFirstPosition;
+    private Vector3Int selectedSecondPosition;
     private Bounds fillVolume;
     private Transform cube;
 
@@ -21,7 +21,7 @@ public class BoxAddBlockTool : SelectionTool
         {
             if (!selectedFirst)
             {
-                selectedFirstPosition = input.GetPointerPosition();
+                selectedFirstPosition = input.GetPointerGridPositionPosition(false);
                 selectedFirst = true;
                 fillVolume.min = selectedFirstPosition;
                 cube = GameObject.CreatePrimitive(PrimitiveType.Cube).transform;
@@ -29,7 +29,7 @@ public class BoxAddBlockTool : SelectionTool
             }
             else
             {
-                selectedSecondPosition = input.GetPointerPosition();
+                selectedSecondPosition = input.GetPointerGridPositionPosition(false);
                 Vector3Int minPos = new Vector3Int(
                     (int) Mathf.Min(selectedFirstPosition.x, selectedSecondPosition.x),
                     (int) Mathf.Min(selectedFirstPosition.y, selectedSecondPosition.y),
@@ -49,7 +49,7 @@ public class BoxAddBlockTool : SelectionTool
 
         if (selectedFirst)
         {
-            fillVolume.max = input.GetPointerPosition();
+            fillVolume.max = input.GetPointerGridPositionPosition(false);
             cube.position = fillVolume.center-(Vector3.one/2*WorldInfo.BlockSize);
             cube.localScale = fillVolume.size;
         }

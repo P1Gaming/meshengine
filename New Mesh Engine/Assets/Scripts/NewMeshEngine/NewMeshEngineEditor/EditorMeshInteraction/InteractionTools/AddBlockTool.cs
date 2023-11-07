@@ -3,21 +3,20 @@ using UnityEngine;
 
 public class AddBlockTool : SelectionTool
 {
-    Vector3 selectedWorldPosition;
-    private Func<BlockType> GetBlockTypeAction;
-    float distance = 30;
+    Vector3Int selectedWorldPosition;
+    private Func<BlockType> getBlockTypeAction;
 
-    public AddBlockTool(Func<BlockType> GetBlockType)
+    public AddBlockTool(Func<BlockType> getBlockType)
     {
-        GetBlockTypeAction = GetBlockType;
+        getBlockTypeAction = getBlockType;
     }
 
     public override void Tick(IInput input)
     {
         if (input.PointerClick())
         {
-            selectedWorldPosition = input.GetPointerPosition();
-            InvokeFinnished(new AddBlockCommand(selectedWorldPosition, GetBlockTypeAction()));
+            selectedWorldPosition = input.GetPointerGridPositionPosition(false);
+            InvokeFinnished(new AddBlockCommand(selectedWorldPosition, getBlockTypeAction()));
         }
     }
 }

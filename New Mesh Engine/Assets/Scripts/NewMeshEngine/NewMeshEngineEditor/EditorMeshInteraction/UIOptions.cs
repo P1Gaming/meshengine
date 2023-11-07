@@ -1,6 +1,4 @@
-using System;
 using UnityEngine;
-using static SelectionTool;
 
 public class UIOptions : MonoBehaviour
 {
@@ -65,7 +63,8 @@ public class UIOptions : MonoBehaviour
     {
         if (selectionTool == null) return;
         
-        input.GetPointerPosition();
+        input.GetPointerGridPositionPosition(true);
+        
         selectionTool.Tick(input);
         if (input.Cancel())
         {

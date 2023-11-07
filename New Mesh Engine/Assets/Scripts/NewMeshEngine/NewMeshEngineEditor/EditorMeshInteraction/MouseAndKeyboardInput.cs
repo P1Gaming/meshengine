@@ -8,7 +8,8 @@ public class MouseAndKeyboardInput : IInput
     {
         this.worldPositionSelection = worldPositionSelection;
     }
-    public Vector3 GetPointerPosition()
+
+    public Vector3Int GetPointerGridPositionPosition(bool showIndicator)
     {
         return worldPositionSelection.GetClosestHitPoint();
     }

@@ -8,7 +8,7 @@ public class WorldPositionSelection : MonoBehaviour
     [SerializeField] private Transform indicator;
     
     
-    public Vector3 GetClosestHitPoint()
+    public Vector3Int GetClosestHitPoint()
     {hitPlane.transform.localPosition = Vector3.forward * maxDistance;
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
 
@@ -26,11 +26,11 @@ public class WorldPositionSelection : MonoBehaviour
                 }
             }
 
-            Vector3 pos = Vector3Int.RoundToInt(hitResults[hitindexClosestToPlayer].point);
+            Vector3Int pos = Vector3Int.RoundToInt(hitResults[hitindexClosestToPlayer].point);
             indicator.position = pos;
             return pos;
         }
-        return new Vector3(int.MaxValue, int.MaxValue,int.MaxValue);
+        return new Vector3Int(int.MaxValue, int.MaxValue,int.MaxValue);
     }
 
     public void ChangeDistance(float value)
