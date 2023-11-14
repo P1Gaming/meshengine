@@ -1,4 +1,5 @@
-﻿using System;
+﻿using RoundedVoxels;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,10 +21,16 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
                +             +
                3+++++++++++++2
         */
+    [SerializeField] MeshFilter meshFilter;
     [Range(0, 1f)]
     [SerializeField] float bevel;
     [Range(0, 10)]
     [SerializeField] int smoothness;
+
+    private static float Bevel = 0.4f;
+    private static int Smoothness = 3;
+    private static MeshFilter MeshFilter;
+
     public static readonly Vector3[] UnitCubeVertices =
     {
         new Vector3(-0.5f, 0.5f, -0.5f), new Vector3(0.5f, 0.5f, -0.5f), new Vector3(0.5f, -0.5f, -0.5f), new Vector3(-0.5f, -0.5f, -0.5f),
@@ -36,9 +43,17 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
     Queue<ChunkData> chunksToGenerateMeshFor = new();
     Queue<ChunkDataAndMeshData> chunksGenerated = new();
     bool generatingMesh;
+    // Temporary fix
+    private void OnValidate()
+    {
+        Smoothness = smoothness;
+        Bevel = bevel;
+        MeshFilter = meshFilter;
+    }
+
     private void Update()
     {
-        if(chunksGenerated.Count > 0)
+        if (chunksGenerated.Count > 0)
         {
             var chunkDataAndMeshData = chunksGenerated.Dequeue();
             var mesh = new Mesh();
@@ -69,12 +84,15 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
         }
 
         var meshData = CalculateMeshData(chunkData);
+        MeshFilter.sharedMesh = meshData.GetMesh();
+        /*
         var mesh = new Mesh();
         mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         mesh.vertices = meshData.vertices.ToArray();
         mesh.triangles = meshData.triangles.ToArray();
         mesh.RecalculateNormals();
         OnMeshModified?.Invoke(chunkData, mesh);
+        */
     }
 
     public void StartGeneratingMesh(ChunkData chunkData)
@@ -97,6 +115,7 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
             generatingMesh = false;
         });
     }
+    /*
     static MeshData CalculateMeshData(ChunkData chunkData)
     {
         List<Vector3> vertices = new List<Vector3>();
@@ -157,6 +176,33 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
         }
 
         return new MeshData(vertices, triangles);
+    }
+    */
+    static MeshData CalculateMeshData(ChunkData chunkData)
+    {
+        var voxelProvider = new VoxelProvider(new VoxelSettings(Bevel, Smoothness));
+        var meshData = new MeshData();
+
+        Vector3 firstBlockCentre = -WorldInfo.ChunkDimensions / 2 + (WorldInfo.BlockSize / 2) * Vector3.one;
+
+        for (int i = 0; i < WorldInfo.ChunkDimensions.x; i++)
+        {
+            for (int j = 0; j < WorldInfo.ChunkDimensions.y; j++)
+            {
+                for (int k = 0; k < WorldInfo.ChunkDimensions.z; k++)
+                {
+                    if (chunkData.Data[i, j, k] == BlockType.Air)
+                        continue;
+                    Vector3 blockPosition = firstBlockCentre + WorldInfo.BlockSize * new Vector3(i, j, k);
+                    
+                    var neighbours = new VoxelNeighbours(chunkData.Data, new Vector3Int(i, j, k));
+                    var voxelCentre = -1 * Vector3.one + new Vector3(i, j, k);
+                    voxelProvider.AddVoxelToMeshData(meshData, blockPosition, neighbours);
+                }
+            }
+        }
+
+        return meshData;
     }
 
     static void AddFaceVertices(ref List<Vector3> vertices, Vector3 blockPosition, int vertex0, int vertex1, int vertex2, int vertex3)
