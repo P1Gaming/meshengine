@@ -85,6 +85,7 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
 
         var meshData = CalculateMeshData(chunkData);
         MeshFilter.sharedMesh = meshData.GetMesh();
+        OnMeshModified?.Invoke(chunkData, meshData.GetMesh());
         /*
         var mesh = new Mesh();
         mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
@@ -114,6 +115,8 @@ internal class MeshGenerator : MonoBehaviour, IMeshGenerator
             chunksGenerated.Enqueue(new ChunkDataAndMeshData(chunkData, meshData));
             generatingMesh = false;
         });
+
+
     }
     /*
     static MeshData CalculateMeshData(ChunkData chunkData)

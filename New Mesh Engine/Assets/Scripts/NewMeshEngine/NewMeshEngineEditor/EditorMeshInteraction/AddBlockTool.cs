@@ -7,7 +7,7 @@ public class AddBlockTool : SelectionTool
     private Func<BlockType> GetBlockTypeAction;
     private Vector3 selectedWorldPosition;
     Transform indicator;
-    float distance = 30;
+    float distance = 15;
 
     public AddBlockTool(WorldPositionSelection worldPositionSelection, Func<BlockType> GetBlockType,
         Transform indicator)
