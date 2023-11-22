@@ -7,12 +7,14 @@ public class UIOptions : MonoBehaviour
     [SerializeField] WorldPositionSelection worldPositionSelection;
     [SerializeField] Slider slider;
 
-    SelectionTool selectionTool;
+    private SelectionTool selectionTool;
     private IInput input;
+    private CommandManager commandManager;
 
     private void Awake()
     {
         input = new MouseAndKeyboardInput(worldPositionSelection);
+        commandManager = FindObjectOfType<CommandManager>();
     }
 
     #region ToolSelections
@@ -63,7 +65,7 @@ public class UIOptions : MonoBehaviour
     {
         if (command != null)
         {
-            FindObjectOfType<CommandManager>().ExecuteCommand(command);
+            commandManager.ExecuteCommand(command);
         }
         else
         {
