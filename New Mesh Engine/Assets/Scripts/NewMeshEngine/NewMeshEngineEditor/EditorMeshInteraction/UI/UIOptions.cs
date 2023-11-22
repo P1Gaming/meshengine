@@ -1,9 +1,11 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIOptions : MonoBehaviour
 {
     [SerializeField] BlockType debugBlocktype;
     [SerializeField] WorldPositionSelection worldPositionSelection;
+    [SerializeField] Slider slider;
 
     SelectionTool selectionTool;
     private IInput input;
@@ -13,7 +15,7 @@ public class UIOptions : MonoBehaviour
         input = new MouseAndKeyboardInput(worldPositionSelection);
     }
 
-
+    #region ToolSelections
     public void SelectAddBlock()
     {
         AddBlockTool addBlockTool = new AddBlockTool(GetBlockType);
@@ -26,9 +28,20 @@ public class UIOptions : MonoBehaviour
         ChangeTool(boxTool);
     }
 
+    public void SelectSpereBlock()
+    {
+        SphereBlock sphereBlock = new SphereBlock(GetBlockType, GetSize);
+        ChangeTool(sphereBlock);
+    }
+    #endregion
+    
     BlockType GetBlockType()
     {
         return debugBlocktype;
+    }
+    float GetSize()
+    {
+        return slider.value;
     }
 
     void ChangeTool(SelectionTool newTool)
@@ -57,7 +70,6 @@ public class UIOptions : MonoBehaviour
             ChangeTool(null);
         }
     }
-
 
     private void Update()
     {

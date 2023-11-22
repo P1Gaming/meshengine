@@ -7,7 +7,7 @@ public class AddBlocksCommand : ICommand
     private List<Vector3Int> positions;
     private BlockType blockType;
 
-    private List<BlockTypeWithPosition> previousBlockTypes;
+    private List<BlockTypeWithPosition> previousBlockTypes = new List<BlockTypeWithPosition>();
     public AddBlocksCommand(List<Vector3Int> positions, BlockType blockType, string commandName = "Add blocks")
     {
         this.positions = positions;
