@@ -1433,8 +1433,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   meshFilter: {fileID: 1577604286}
-  bevel: 0.175
-  smoothness: 3
+  bevel: 0.508
+  smoothness: 2
 --- !u!33 &1577604286
 MeshFilter:
   m_ObjectHideFlags: 0
