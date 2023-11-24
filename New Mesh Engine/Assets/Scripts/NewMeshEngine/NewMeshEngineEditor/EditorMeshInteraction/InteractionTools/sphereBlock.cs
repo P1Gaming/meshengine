@@ -38,7 +38,7 @@ public class SphereBlock : SelectionTool
     }
     void FindWholeUnitPositions(float radius, Vector3 initialPosition)
     {
-        blocks.Clear();
+        blocks = new List<Vector3Int>();
         Vector3Int roundedPosition = Vector3Int.RoundToInt(initialPosition);
 
         for (int x = (int)(roundedPosition.x - radius); x <= (int)(roundedPosition.x + radius); x++)
