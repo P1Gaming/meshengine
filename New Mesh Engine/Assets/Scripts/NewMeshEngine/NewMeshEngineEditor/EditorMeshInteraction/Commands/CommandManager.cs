@@ -5,6 +5,7 @@ using UnityEngine;
 [ExecuteAlways]
 public class CommandManager : MonoBehaviour
 {
+    public event Action<string> OnUndoStackChanged;
     private FloodingStack<ICommand> undoStack = new FloodingStack<ICommand>(10);
     private Stack<ICommand> redoStack = new Stack<ICommand>();
 
@@ -16,6 +17,7 @@ public class CommandManager : MonoBehaviour
         {
             undoStack.Push(command);
             redoStack.Clear();
+            OnUndoStackChanged?.Invoke(undoStack.Peek().GetCommandName());
         }
     }
 
@@ -27,6 +29,7 @@ public class CommandManager : MonoBehaviour
 
             command.Undo();
             redoStack.Push(command);
+            OnUndoStackChanged?.Invoke(undoStack.Peek().GetCommandName());
         }
     }
     public void RedoLastChange()
