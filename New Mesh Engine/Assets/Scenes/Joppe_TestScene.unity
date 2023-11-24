@@ -2215,6 +2215,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1577604284}
   - component: {fileID: 1577604285}
+  - component: {fileID: 1577604286}
   m_Layer: 0
   m_Name: MeshGenerator
   m_TagString: Untagged
@@ -2249,8 +2250,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6a19ae7eadc2ee4084e35408ab73c86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  bevel: 0
-  smoothness: 0
+  meshFilter: {fileID: 1577604286}
+  bevel: 0.508
+  smoothness: 2
+--- !u!33 &1577604286
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1577604282}
+  m_Mesh: {fileID: 0}
 --- !u!1 &1661809979
 GameObject:
   m_ObjectHideFlags: 0
