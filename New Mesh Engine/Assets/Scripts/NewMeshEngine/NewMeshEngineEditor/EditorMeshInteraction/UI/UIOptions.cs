@@ -1,32 +1,56 @@
-using System;
 using UnityEngine;
-using static SelectionTool;
+using UnityEngine.UI;
 
 public class UIOptions : MonoBehaviour
 {
     [SerializeField] BlockType debugBlocktype;
     [SerializeField] WorldPositionSelection worldPositionSelection;
-    [SerializeField] Transform indicator;
+    [SerializeField] Slider slider;
 
-    SelectionTool selectionTool;
-    IInput input = new MouseAndKeyboardInput();
+    private SelectionTool selectionTool;
+    private IInput input;
+    private CommandManager commandManager;
 
+    private void Awake()
+    {
+        input = new MouseAndKeyboardInput(worldPositionSelection);
+        commandManager = FindObjectOfType<CommandManager>();
+    }
 
+    #region ToolSelections
     public void SelectAddBlock()
     {
-        AddBlockTool addBlockTool = new AddBlockTool(worldPositionSelection, GetBlockType, indicator);
+        AddBlockTool addBlockTool = new AddBlockTool(GetBlockType);
         ChangeTool(addBlockTool);
     }
 
+    public void SelectBoxFill()
+    {
+        BoxAddBlockTool boxTool = new BoxAddBlockTool(GetBlockType);
+        ChangeTool(boxTool);
+    }
+
+    public void SelectSpereBlock()
+    {
+        SphereBlock sphereBlock = new SphereBlock(GetBlockType, GetSize);
+        ChangeTool(sphereBlock);
+    }
+    #endregion
+    
     BlockType GetBlockType()
     {
         return debugBlocktype;
+    }
+    float GetSize()
+    {
+        return slider.value;
     }
 
     void ChangeTool(SelectionTool newTool)
     {
         if (selectionTool != null)
         {
+            selectionTool.OnCancel();
             selectionTool.SelectionToolEnded -= OnToolUsed;
         }
 
@@ -41,7 +65,7 @@ public class UIOptions : MonoBehaviour
     {
         if (command != null)
         {
-            FindObjectOfType<CommandManager>().ExecuteCommand(command);
+            commandManager.ExecuteCommand(command);
         }
         else
         {
@@ -49,11 +73,12 @@ public class UIOptions : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         if (selectionTool == null) return;
-
+        
+        input.GetPointerGridPositionPosition(true);
+        
         selectionTool.Tick(input);
         if (input.Cancel())
         {
