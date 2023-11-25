@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using MeshEngine.SaveSystem;
 using UnityEngine;
 
 public class MeshEngineHandler : IMeshEngine
@@ -17,12 +19,39 @@ public class MeshEngineHandler : IMeshEngine
     public List<bool> AddBlocks(List<BlockTypeWithPosition> blocksToAdd)
     {
         List<bool> successfullyAdded = new List<bool>();
-
-        foreach(BlockTypeWithPosition blocksWithPosition in blocksToAdd)
+        IChunkLoader chunkLoader = ResourceReferenceKeeper.GetResource<IChunkLoader>();
+        List<ChunkData> chunks=new List<ChunkData>();
+        //assumption: chunks change based on the block position each time we make a modification
+        bool foundFlag = false;
+        foreach(BlockTypeWithPosition blockWithPosition in blocksToAdd)
         {
-            successfullyAdded.Add(TryAddBlock(blocksWithPosition));
-        }
+            successfullyAdded.Add(TryAddBlock(blockWithPosition));
+            ChunkData chunkData = chunkLoader.GetChunkData(blockWithPosition.Position);
+            Vector3Int positionInChunk = WorldInfo.WorldPositionToPositionInChunk(blockWithPosition.Position); 
+            chunkData.AddBlockAtIndex(positionInChunk, blockWithPosition.BlockType); 
 
+            for (int i=0;i<chunks.Count;i++) 
+            { 
+                foundFlag = false; 
+                if (chunks[i].position == chunkData.position) 
+                { 
+                    chunks[i]=chunkData; 
+                    foundFlag = true; 
+                    break;
+                }
+            } 
+            if (!foundFlag) 
+            { 
+                chunks.Add(chunkData);
+            }
+        }
+        //save and modify mesh here
+        foreach (ChunkData chunk in chunks)
+        {
+            ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunk);
+            ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunk);
+        }
+        
         return successfullyAdded;
     }
 

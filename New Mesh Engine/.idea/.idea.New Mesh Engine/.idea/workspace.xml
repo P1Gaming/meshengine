@@ -4,7 +4,7 @@
     <list default="true" id="d4e8e704-d3c3-4446-b3be-de686afafdcb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.New Mesh Engine/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.New Mesh Engine/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/ResourceReferenceKeeper.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/ResourceReferenceKeeper.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/RequestHandler.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/RequestHandler.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -23,9 +23,17 @@
     </file-type-list>
   </component>
   <component name="HighlightingSettingsPerFile">
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/SourcesCache/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/31/System.Collections.Generic.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/Testing/Editmode Tests/SaveTests.cs" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$APPLICATION_CONFIG_DIR$/resharper-host/DecompilerCache/decompiler/5a41d6b7189842eca409fd0b1c3e3dcf17bf78/ae/e9503650/Action.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2Wihj5HYYQLm8MEnFCY7cvcEX3D" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -33,16 +41,25 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="DebuggerViewTab_PTCS_FirstProportionKey" value="0.34975636" />
-    <property name="DebuggerViewTab_PTCS_LastProportionKey" value="0.0" />
-    <property name="Discover.Launch.Via.Unity" value="true" />
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="vue.rearranger.settings.migration" value="true" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Discover.Launch.Via.Unity": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "rider.run.widget.enabled.cache": "false",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
+    <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
+      <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.21f1\Editor\Unity.exe" />
+      <option name="PROGRAM_PARAMETERS" value="-runTests -batchmode -projectPath &quot;C:\Users\sachi\OneDrive\Documents\P1\Mesh Engine\meshengine\New Mesh Engine&quot; -testResults Logs/results.xml -testPlatform EditMode -debugCodeOptimization" />
+      <option name="WORKING_DIRECTORY" value="C:\Users\sachi\OneDrive\Documents\P1\Mesh Engine\meshengine\New Mesh Engine" />
+      <option name="PASS_PARENT_ENVS" value="1" />
+      <option name="USE_EXTERNAL_CONSOLE" value="0" />
+      <method v="2" />
+    </configuration>
     <configuration name="Attach to Unity Editor &amp; Play" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="UNITY_ATTACH_AND_PLAY" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
@@ -53,10 +70,10 @@
       </option>
       <method v="2" />
     </configuration>
-    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost" ignored-value-for-modified-check="17352">
+    <configuration name="Attach to Unity Editor" type="UNITY_DEBUG_RUN_CONFIGURATION" factoryName="Unity Debug" show_console_on_std_err="false" show_console_on_std_out="false" port="50000" address="localhost">
       <option name="allowRunningInParallel" value="false" />
       <option name="listenPortForConnections" value="false" />
-      <option name="pid" value="17352" />
+      <option name="pid" />
       <option name="projectPathOnTarget" />
       <option name="selectedOptions">
         <list />
@@ -74,6 +91,7 @@
       <updated>1697221445559</updated>
       <workItem from="1697221473883" duration="596000" />
       <workItem from="1697457866909" duration="628000" />
+      <workItem from="1700888372902" duration="6059000" />
     </task>
     <servers />
   </component>
@@ -105,40 +123,27 @@
           <line>28</line>
           <properties documentPath="C:\UnityProjects\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\NewMeshEngineEditor\EditorMeshInteraction\Commands\AddBlockCommand.cs" initialLine="27" isMultiMethodBreakpoint="true">
             <option name="multiMethodBreakpoint" value="true" />
-            <startOffsets>
-              <option value="-1" />
-            </startOffsets>
-            <endOffsets>
-              <option value="-1" />
-            </endOffsets>
           </properties>
           <option name="timeStamp" value="32" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs</url>
-          <line>85</line>
-          <properties documentPath="C:\UnityProjects\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\MeshInteraction\MeshEngineHandler.cs" initialLine="92" containingFunctionPresentation="method 'TryRemoveBlock'">
-            <startOffsets>
-              <option value="3216" />
-            </startOffsets>
-            <endOffsets>
-              <option value="3317" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="33" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
           <url>file://$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/NewMeshEngineEditor/EditorMeshInteraction/Commands/AddBlockCommand.cs</url>
           <line>17</line>
-          <properties documentPath="C:\UnityProjects\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\NewMeshEngineEditor\EditorMeshInteraction\Commands\AddBlockCommand.cs" initialLine="16" containingFunctionPresentation="method 'TryExecute'">
+          <properties documentPath="C:\UnityProjects\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\NewMeshEngineEditor\EditorMeshInteraction\Commands\AddBlockCommand.cs" initialLine="16" containingFunctionPresentation="method 'TryExecute'" />
+          <option name="timeStamp" value="34" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="DotNet Breakpoints">
+          <url>file://$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs</url>
+          <line>111</line>
+          <properties documentPath="C:\Users\sachi\OneDrive\Documents\P1\Mesh Engine\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\MeshInteraction\MeshEngineHandler.cs" initialLine="82" containingFunctionPresentation="method 'TryAddBlock'">
             <startOffsets>
-              <option value="382" />
+              <option value="4301" />
             </startOffsets>
             <endOffsets>
-              <option value="499" />
+              <option value="4389" />
             </endOffsets>
           </properties>
-          <option name="timeStamp" value="34" />
+          <option name="timeStamp" value="38" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
