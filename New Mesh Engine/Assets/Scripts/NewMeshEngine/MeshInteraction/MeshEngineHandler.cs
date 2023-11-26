@@ -21,7 +21,6 @@ public class MeshEngineHandler : IMeshEngine
         List<bool> successfullyAdded = new List<bool>();
         IChunkLoader chunkLoader = ResourceReferenceKeeper.GetResource<IChunkLoader>();
         List<ChunkData> chunks=new List<ChunkData>();
-        //assumption: chunks change based on the block position each time we make a modification
         bool foundFlag = false;
         foreach(BlockTypeWithPosition blockWithPosition in blocksToAdd)
         {
@@ -45,7 +44,6 @@ public class MeshEngineHandler : IMeshEngine
                 chunks.Add(chunkData);
             }
         }
-        //save and modify mesh here
         foreach (ChunkData chunk in chunks)
         {
             ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunk);
@@ -88,7 +86,6 @@ public class MeshEngineHandler : IMeshEngine
             ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
             Vector3Int posInChunk = WorldInfo.WorldPositionToPositionInChunk(position);
             var chunkData = chunkDataToBeChanged.Data;
-            //var blockDrop = chunkData[posInChunk.x, posInChunk.y, posInChunk.z];
             chunkData[posInChunk.x, posInChunk.y, posInChunk.z] = BlockType.Air;
             chunkDataToBeChanged.OverwriteBlockTypeData(chunkData, false);
             for (int i=0;i<chunksChanged.Count;i++) 
