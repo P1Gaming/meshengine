@@ -79,15 +79,44 @@ public class MeshEngineHandler : IMeshEngine
     {
         List<bool> successfulBlockRemovals = new List<bool>();
         List<BlockTypeWithPosition> blocksRemoved = new List<BlockTypeWithPosition>();
-
+        List<ChunkData> chunksChanged = new List<ChunkData>();
+        bool foundFlag = false;
         foreach(Vector3Int position in positionOfBlocksToRemove)
         {
             bool wasRemoved = TryRemoveBlock(position, out BlockTypeWithPosition removedBlock);
+            
+            ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
+            Vector3Int posInChunk = WorldInfo.WorldPositionToPositionInChunk(position);
+            var chunkData = chunkDataToBeChanged.Data;
+            //var blockDrop = chunkData[posInChunk.x, posInChunk.y, posInChunk.z];
+            chunkData[posInChunk.x, posInChunk.y, posInChunk.z] = BlockType.Air;
+            chunkDataToBeChanged.OverwriteBlockTypeData(chunkData, false);
+            for (int i=0;i<chunksChanged.Count;i++) 
+            { 
+                foundFlag = false; 
+                if (chunksChanged[i].position == chunkDataToBeChanged.position) 
+                { 
+                    chunksChanged[i]=chunkDataToBeChanged; 
+                    foundFlag = true; 
+                    break;
+                }
+            } 
+            if (!foundFlag) 
+            { 
+                chunksChanged.Add(chunkDataToBeChanged);
+            }
+            
             successfulBlockRemovals.Add(wasRemoved);
+            
             if(wasRemoved)
                 blocksRemoved.Add(removedBlock);
             else
                 blocksRemoved.Add(new BlockTypeWithPosition(BlockType.Air, position));
+        }
+        foreach (ChunkData chunk in chunksChanged)
+        {
+            ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunk);
+            ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunk);
         }
 
         blocks = blocksRemoved;

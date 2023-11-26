@@ -22,16 +22,6 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-    <setting file="mock:///Dummy.cs" root0="SKIP_HIGHLIGHTING" />
-  </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
@@ -41,16 +31,16 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Discover.Launch.Via.Unity": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "rider.run.widget.enabled.cache": "false",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Discover.Launch.Via.Unity&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;rider.run.widget.enabled.cache&quot;: &quot;false&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager" selected="Attach to Unity Editor.Attach to Unity Editor">
     <configuration name="UnitTests (batch mode)" type="RunUnityExe" factoryName="Unity Executable">
       <option name="EXE_PATH" value="C:\Program Files\Unity\Hub\Editor\2021.3.21f1\Editor\Unity.exe" />
@@ -91,7 +81,8 @@
       <updated>1697221445559</updated>
       <workItem from="1697221473883" duration="596000" />
       <workItem from="1697457866909" duration="628000" />
-      <workItem from="1700888372902" duration="6059000" />
+      <workItem from="1700888372902" duration="8164000" />
+      <workItem from="1700980797961" duration="1372000" />
     </task>
     <servers />
   </component>
@@ -131,19 +122,6 @@
           <line>17</line>
           <properties documentPath="C:\UnityProjects\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\NewMeshEngineEditor\EditorMeshInteraction\Commands\AddBlockCommand.cs" initialLine="16" containingFunctionPresentation="method 'TryExecute'" />
           <option name="timeStamp" value="34" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="DotNet Breakpoints">
-          <url>file://$PROJECT_DIR$/Assets/Scripts/NewMeshEngine/MeshInteraction/MeshEngineHandler.cs</url>
-          <line>111</line>
-          <properties documentPath="C:\Users\sachi\OneDrive\Documents\P1\Mesh Engine\meshengine\New Mesh Engine\Assets\Scripts\NewMeshEngine\MeshInteraction\MeshEngineHandler.cs" initialLine="82" containingFunctionPresentation="method 'TryAddBlock'">
-            <startOffsets>
-              <option value="4301" />
-            </startOffsets>
-            <endOffsets>
-              <option value="4389" />
-            </endOffsets>
-          </properties>
-          <option name="timeStamp" value="38" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

@@ -110,7 +110,8 @@ internal class RequestHandler : IRequestHandler
         {
             return new BlockTypeWithPosition(BlockType.Air, position);
         }
-
+        
+        /*
         ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
         Vector3Int posInChunk = WorldInfo.WorldPositionToPositionInChunk(position);
         
@@ -125,6 +126,7 @@ internal class RequestHandler : IRequestHandler
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
 
         ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunkDataToBeChanged);
+        */
         return new BlockTypeWithPosition(BlockType.Air, position);
     }
 }
