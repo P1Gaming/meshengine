@@ -24,15 +24,6 @@ internal class RequestHandler : IRequestHandler
         {
             return false;
         }
-
-        ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(blockToBeAdded.Position);
-        Vector3Int positionInChunk = WorldInfo.WorldPositionToPositionInChunk(blockToBeAdded.Position);
-        
-        chunkDataToBeChanged.AddBlockAtIndex(positionInChunk, blockToBeAdded.BlockType);
-
-        ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
-        ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunkDataToBeChanged);
-
         return true;
     }
 
@@ -42,7 +33,7 @@ internal class RequestHandler : IRequestHandler
         Vector3Int positionInChunk = WorldInfo.WorldPositionToPositionInChunk(blockToBeAdded.Position);
         
         chunkDataToBeChanged.AddBlockAtIndex(positionInChunk, blockToBeAdded.BlockType);
-
+        
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
     }
 
@@ -110,7 +101,8 @@ internal class RequestHandler : IRequestHandler
         {
             return new BlockTypeWithPosition(BlockType.Air, position);
         }
-
+        
+        /*
         ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
         Vector3Int posInChunk = WorldInfo.WorldPositionToPositionInChunk(position);
         
@@ -125,6 +117,7 @@ internal class RequestHandler : IRequestHandler
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
 
         ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunkDataToBeChanged);
+        */
         return new BlockTypeWithPosition(BlockType.Air, position);
     }
 }

@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
+using MeshEngine.SaveSystem;
 using UnityEngine;
 
 public class MeshEngineHandler : IMeshEngine
@@ -17,12 +19,37 @@ public class MeshEngineHandler : IMeshEngine
     public List<bool> AddBlocks(List<BlockTypeWithPosition> blocksToAdd)
     {
         List<bool> successfullyAdded = new List<bool>();
-
-        foreach(BlockTypeWithPosition blocksWithPosition in blocksToAdd)
+        IChunkLoader chunkLoader = ResourceReferenceKeeper.GetResource<IChunkLoader>();
+        List<ChunkData> chunks=new List<ChunkData>();
+        bool foundFlag = false;
+        foreach(BlockTypeWithPosition blockWithPosition in blocksToAdd)
         {
-            successfullyAdded.Add(TryAddBlock(blocksWithPosition));
-        }
+            successfullyAdded.Add(TryAddBlock(blockWithPosition));
+            ChunkData chunkData = chunkLoader.GetChunkData(blockWithPosition.Position);
+            Vector3Int positionInChunk = WorldInfo.WorldPositionToPositionInChunk(blockWithPosition.Position); 
+            chunkData.AddBlockAtIndex(positionInChunk, blockWithPosition.BlockType); 
 
+            for (int i=0;i<chunks.Count;i++) 
+            { 
+                foundFlag = false; 
+                if (chunks[i].position == chunkData.position) 
+                { 
+                    chunks[i]=chunkData; 
+                    foundFlag = true; 
+                    break;
+                }
+            } 
+            if (!foundFlag) 
+            { 
+                chunks.Add(chunkData);
+            }
+        }
+        foreach (ChunkData chunk in chunks)
+        {
+            ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunk);
+            ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunk);
+        }
+        
         return successfullyAdded;
     }
 
@@ -50,15 +77,43 @@ public class MeshEngineHandler : IMeshEngine
     {
         List<bool> successfulBlockRemovals = new List<bool>();
         List<BlockTypeWithPosition> blocksRemoved = new List<BlockTypeWithPosition>();
-
+        List<ChunkData> chunksChanged = new List<ChunkData>();
+        bool foundFlag = false;
         foreach(Vector3Int position in positionOfBlocksToRemove)
         {
             bool wasRemoved = TryRemoveBlock(position, out BlockTypeWithPosition removedBlock);
+            
+            ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
+            Vector3Int posInChunk = WorldInfo.WorldPositionToPositionInChunk(position);
+            var chunkData = chunkDataToBeChanged.Data;
+            chunkData[posInChunk.x, posInChunk.y, posInChunk.z] = BlockType.Air;
+            chunkDataToBeChanged.OverwriteBlockTypeData(chunkData, false);
+            for (int i=0;i<chunksChanged.Count;i++) 
+            { 
+                foundFlag = false; 
+                if (chunksChanged[i].position == chunkDataToBeChanged.position) 
+                { 
+                    chunksChanged[i]=chunkDataToBeChanged; 
+                    foundFlag = true; 
+                    break;
+                }
+            } 
+            if (!foundFlag) 
+            { 
+                chunksChanged.Add(chunkDataToBeChanged);
+            }
+            
             successfulBlockRemovals.Add(wasRemoved);
+            
             if(wasRemoved)
                 blocksRemoved.Add(removedBlock);
             else
                 blocksRemoved.Add(new BlockTypeWithPosition(BlockType.Air, position));
+        }
+        foreach (ChunkData chunk in chunksChanged)
+        {
+            ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunk);
+            ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunk);
         }
 
         blocks = blocksRemoved;
