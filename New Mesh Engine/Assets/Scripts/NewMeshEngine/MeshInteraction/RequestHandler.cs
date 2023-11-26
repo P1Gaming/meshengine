@@ -24,6 +24,15 @@ internal class RequestHandler : IRequestHandler
         {
             return false;
         }
+
+        ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(blockToBeAdded.Position);
+        Vector3Int positionInChunk = WorldInfo.WorldPositionToPositionInChunk(blockToBeAdded.Position);
+
+        chunkDataToBeChanged.AddBlockAtIndex(positionInChunk, blockToBeAdded.BlockType);
+
+        ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
+        ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunkDataToBeChanged);
+
         return true;
     }
 
@@ -102,7 +111,7 @@ internal class RequestHandler : IRequestHandler
             return new BlockTypeWithPosition(BlockType.Air, position);
         }
         
-        /*
+        
         ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
         Vector3Int posInChunk = WorldInfo.WorldPositionToPositionInChunk(position);
         
@@ -117,7 +126,41 @@ internal class RequestHandler : IRequestHandler
         ResourceReferenceKeeper.GetResource<ISaveData>().SaveChunkData(chunkDataToBeChanged);
 
         ResourceReferenceKeeper.GetResource<IMeshGenerator>().ModifyMesh(chunkDataToBeChanged);
-        */
+        
         return new BlockTypeWithPosition(BlockType.Air, position);
+    }
+
+    public BlockTypeWithPosition RemoveBlockAtPositionNoMeshReload(Vector3Int position)
+    {
+        if (!WorldInfo.IsPositionInsideWorld(position))
+        {
+            return null;
+        }
+        if (!IsBlockAtPosition(position))
+        {
+            return new BlockTypeWithPosition(BlockType.Air, position);
+        }
+
+        return new BlockTypeWithPosition(BlockType.Air, position);
+    }
+
+    /// <summary>
+    /// Add a block into save data but dont reload the mesh.
+    /// </summary>
+    /// <param name="blockToBeAdded">The block and position to be added.</param>
+    /// <returns></returns>
+    public bool AddBlockAtPositionNoMeshReload(BlockTypeWithPosition blockToBeAdded)
+    {
+        if (IsBlockAtPosition(blockToBeAdded.Position))
+        {
+            return false;
+        }
+
+        if (!WorldInfo.IsPositionInsideWorld(blockToBeAdded.Position))
+        {
+            return false;
+        }
+
+        return true;
     }
 }
