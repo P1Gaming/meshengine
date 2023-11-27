@@ -24,7 +24,7 @@ public class MeshEngineHandler : IMeshEngine
         bool foundFlag = false;
         foreach(BlockTypeWithPosition blockWithPosition in blocksToAdd)
         {
-            successfullyAdded.Add(TryAddBlock(blockWithPosition));
+            successfullyAdded.Add(TryAddBlockNoMeshReload(blockWithPosition));
             ChunkData chunkData = chunkLoader.GetChunkData(blockWithPosition.Position);
             Vector3Int positionInChunk = WorldInfo.WorldPositionToPositionInChunk(blockWithPosition.Position); 
             chunkData.AddBlockAtIndex(positionInChunk, blockWithPosition.BlockType); 
@@ -81,7 +81,7 @@ public class MeshEngineHandler : IMeshEngine
         bool foundFlag = false;
         foreach(Vector3Int position in positionOfBlocksToRemove)
         {
-            bool wasRemoved = TryRemoveBlock(position, out BlockTypeWithPosition removedBlock);
+            bool wasRemoved = TryRemoveBlockNoMeshReload(position, out BlockTypeWithPosition removedBlock);
             
             ChunkData chunkDataToBeChanged = ResourceReferenceKeeper.GetResource<IChunkLoader>().GetChunkData(position);
             Vector3Int posInChunk = WorldInfo.WorldPositionToPositionInChunk(position);
@@ -137,12 +137,24 @@ public class MeshEngineHandler : IMeshEngine
     {
         return ResourceReferenceKeeper.GetResource<IRequestHandler>().AddBlockAtPosition(block);
     }
+
+    private bool TryAddBlockNoMeshReload(BlockTypeWithPosition block)
+    {
+        return ResourceReferenceKeeper.GetResource<IRequestHandler>().AddBlockAtPositionNoMeshReload(block);
+    }
     
     public bool TryRemoveBlock(Vector3Int position) => TryRemoveBlock(position, out BlockTypeWithPosition removed);
 
     public bool TryRemoveBlock(Vector3Int position, out BlockTypeWithPosition removedType)
     {
         removedType = ResourceReferenceKeeper.GetResource<IRequestHandler>().RemoveBlockAtPosition(position);
+
+        return WorldInfo.IsPositionInsideWorld(position) && removedType.BlockType != BlockType.Air;
+    }
+
+    private bool TryRemoveBlockNoMeshReload(Vector3Int position, out BlockTypeWithPosition removedType)
+    {
+        removedType = ResourceReferenceKeeper.GetResource<IRequestHandler>().RemoveBlockAtPositionNoMeshReload(position);
 
         return WorldInfo.IsPositionInsideWorld(position) && removedType.BlockType != BlockType.Air;
     }

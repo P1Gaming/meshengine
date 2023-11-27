@@ -13,5 +13,9 @@ internal interface IRequestHandler
 
     public bool AddBlockAtPosition(BlockTypeWithPosition blockToBeAdded);
 
+    public bool AddBlockAtPositionNoMeshReload(BlockTypeWithPosition blockToBeAdded);
+
+    public BlockTypeWithPosition RemoveBlockAtPositionNoMeshReload(Vector3Int position);
+
     public BlockTypeWithPosition RemoveBlockAtPosition(Vector3Int worldPosition);
 }
