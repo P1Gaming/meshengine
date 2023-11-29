@@ -5,13 +5,13 @@ using UnityEngine;
 /// </summary>
 public class BlockTypeWithPosition
 {
-    private BlockType _blockType;
-    public BlockType BlockType { get { return _blockType; } }
+    private S_BlockType _blockType;
+    public int BlockID { get { return _blockType.Id; } }
 
     private Vector3Int _position;
     public Vector3Int Position { get { return _position; } }
 
-    public BlockTypeWithPosition(BlockType blockType, Vector3Int pos)
+    public BlockTypeWithPosition(S_BlockType blockType, Vector3Int pos)
     {
         _blockType = blockType;
 

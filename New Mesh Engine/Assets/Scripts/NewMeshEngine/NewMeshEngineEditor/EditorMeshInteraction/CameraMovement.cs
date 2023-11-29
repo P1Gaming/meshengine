@@ -3,7 +3,7 @@ using UnityEngine;
 public class CameraMovement : MonoBehaviour
 {
     private float _speed = 20f;
-    private float _mouseSensitivity = 1000f;
+    private float _mouseSensitivity = 10f;
 
     void Update()
     {
@@ -22,8 +22,8 @@ public class CameraMovement : MonoBehaviour
             float mouseY = Input.GetAxis("Mouse Y");
             Vector2 mouseInput = new Vector2(mouseX, mouseY);
 
-            transform.Rotate(Vector3.up, mouseInput.x * Time.deltaTime * _mouseSensitivity,Space.World);
-            transform.Rotate(Vector3.right, -mouseInput.y * Time.deltaTime * _mouseSensitivity,Space.Self);
+            transform.Rotate(Vector3.up, mouseInput.x * _mouseSensitivity,Space.World);
+            transform.Rotate(Vector3.right, -mouseInput.y * _mouseSensitivity,Space.Self);
             
         }
     }
